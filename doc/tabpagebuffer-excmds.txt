@@ -58,237 +58,242 @@ g:tabpagebuffer#excmds#delete_keeptabpage
 ------------------------------------------------------------------------------
 COMMANDS				*tabpagebuffer-excmds-commands*
 
-:TpbFiles[!]					*TpbFiles* *TpbBuffers* *TpbLs*
+:TpbFiles[!]					*:TpbFiles* *:TpbBuffers* *:TpbLs*
 :TpbBuffers[!]
 :TpbLs[!]
-	Show all buffers only in the current tab.
+	Show all buffers only in the current tab page.
 	Also see |:files||, |:buffers|, |:ls|.
 
 
-:[N]TpbDelete[!]						*TpbDelete*
+:[N]TpbDelete[!]						*:TpbDelete*
 :TpbDelete[!] [N]
 :TpbDelete[!] {bufname}
 :TpbDelete[!] N1 N2 ...
 :N,MTpbDelete[!]
-	Delete buffer only in the current tab.
+	Delete buffer only in the current tab page.
 	Also see |:bdelete|.
 
-:[N]TpbWipeout[!]						*TpbWipeout*
+:[N]TpbWipeout[!]						*:TpbWipeout*
 :TpbWipeout[!] [N]
 :TpbWipeout[!] {bufname}
 :TpbWipeout[!] N1 N2 ...
 :N,MTpbWipeout[!]
-	Really delete buffer only in the current tab.
+	Really delete buffer only in the current tab page.
 	Also see |:bwipeout|.
 
-:[N]TpbUnload[!]						*TpbUnload*
+:[N]TpbUnload[!]						*:TpbUnload*
 :TpbUnload[!] [N]
 :TpbUnload[!] {bufname}
 :TpbUnload[!] N1 N2 ...
 :N,MTpbUnload[!]
-	Unload buffer only in the current tab.
+	Unload buffer only in the current tab page.
 	Also see |:bunload|.
 
 
-:TpbDeleteAll							*TpbDeleteAll*
-	Delete all buffers only in the current tab.
+:TpbDeleteAll							*:TpbDeleteAll*
+	Delete all buffers only in the current tab page.
 
-:TpbWipeoutAll							*TpbWipeoutAll*
-	Really delete all buffers only in the current tab.
+:TpbWipeoutAll							*:TpbWipeoutAll*
+	Really delete all buffers only in the current tab page.
 
-:TpbUnloadAll							*TpbUnloadAll*
-	Unload all buffers only in the current tab.
+:TpbUnloadAll							*:TpbUnloadAll*
+	Unload all buffers only in the current tab page.
 
 
-:[N]TpbBuffer[!] [N]						*TpbBuffer*
+:[N]TpbBuffer[!] [N]						*:TpbBuffer*
 :TpbBuffer[!] {bufname}
-	Edit buffer only in the current tab.
+	Edit buffer only in the current tab page.
 	Also see |:buffer|.
 
-:[N]STpbBuffer [N]						*STpbBuffer*
+:[N]STpbBuffer [N]						*:STpbBuffer*
 :STpbBuffer {bufname}
-	Split window and edit buffer only in the current tab.
+	Split window and edit buffer only in the current tab page.
 	Also see |:sbuffer|.
 
-:[N]VTpbBuffer [N]						*VTpbBuffer*
+:[N]VTpbBuffer [N]						*:VTpbBuffer*
 :VTpbBuffer {bufname}
-	Split vertically and edit buffer only in the current tab.
+	Split vertically and edit buffer only in the current tab page.
 
-:[N]TTpbBuffer [N]						*TTpbBuffer*
+:[N]TTpbBuffer [N]						*:TTpbBuffer*
 :TTpbBuffer {bufname}
-	Open a new tab page and edit buffer only in the current tab.
+	Open a new tab page and edit buffer only in the current tab page.
 
 
-:[N]TpbNext[!] [N]						*TpbNext*
-	Go to [N]th next buffer in buffers only in the current tab.
+:[N]TpbNext[!] [N]						*:TpbNext*
+	Go to [N]th next buffer in buffers only in the current tab page.
 	Also see |:bnext|.
 
-:[N]TpbPrevious[!] [N]						*TpbPrevious*
-	Go to [N]th previous buffer in buffers only in the current tab.
+:[N]TpbPrevious[!] [N]						*:TpbPrevious*
+	Go to [N]th previous buffer in buffers only in the current tab page.
 	Also see |:bprevious|.
 
-:[N]TpbModified[!] [N]			*TpbModified* *TpbModifiedNext*
+:[N]TpbModified[!] [N]			*:TpbModified* *:TpbModifiedNext*
 :[N]TpbModifiedNext[!] [N]
-	Go to [N]th next modified buffer only in the current tab.
+	Go to [N]th next modified buffer only in the current tab page.
 	Also see |:bmodified|.
 
-:[N]TpbModifiedPrevious[!] [N]				*TpbModifiedPrevious*
-	Go to [N]th previous modified buffer only in the current tab.
+:[N]TpbModifiedPrevious[!] [N]				*:TpbModifiedPrevious*
+	Go to [N]th previous modified buffer only in the current tab page.
 
 
-:[N]STpbNext [N]						*STpbNext*
+:[N]STpbNext [N]						*:STpbNext*
 	Split window and go to [N]th next buffer in buffers only in the
-	current tab.
+	current tab page.
 	Also see |:sbnext|.
 
-:[N]STpbPrevious [N]						*STpbPrevious*
+:[N]STpbPrevious [N]						*:STpbPrevious*
 	Split window and go to [N]th previous buffer in buffers only in the
-	current tab.
+	current tab page.
 	Also see |:sbprevious|.
 
-:[N]STpbModified [N]			*STpbModified* *STpbModifiedNext*
+:[N]STpbModified [N]			*:STpbModified* *:STpbModifiedNext*
 :[N]STpbModifiedNext [N]
 	Split window and go to [N]th next modified buffer in buffers only in
-	the current tab.
+	the current tab page.
 	Also see |:sbmodified|.
 
-:[N]STpbModifiedPrevious [N]				*STpbModifiedPrevious*
+:[N]STpbModifiedPrevious [N]				*:STpbModifiedPrevious*
 	Split window and go to [N]th previous modified buffer in buffers only
-	in the current tab.
+	in the current tab page.
 
 
-:[N]VTpbNext [N]						*VTpbNext*
+:[N]VTpbNext [N]						*:VTpbNext*
 	Split vertically and go to [N]th next buffer in buffers only in the
-	current tab.
+	current tab page.
 
-:[N]VTpbPrevious [N]						*VTpbPrevious*
-	Split vertically and go to [N]th previous buffer in buffers only in the
-	current tab.
+:[N]VTpbPrevious [N]						*:VTpbPrevious*
+	Split vertically and go to [N]th previous buffer in buffers only in
+	the current tab page.
 
-:[N]VTpbModified [N]			*VTpbModified* *VTpbModifiedNext*
+:[N]VTpbModified [N]			*:VTpbModified* *:VTpbModifiedNext*
 :[N]VTpbModifiedNext [N]
-	Split vertically and go to [N]th next modified buffer in buffers only in
-	the current tab.
+	Split vertically and go to [N]th next modified buffer in buffers only
+	in the current tab page.
 
-:[N]VTpbModifiedPrevious [N]				*VTpbModifiedPrevious*
-	Split vertically and go to [N]th previous modified buffer in buffers only
-	in the current tab.
+:[N]VTpbModifiedPrevious [N]				*:VTpbModifiedPrevious*
+	Split vertically and go to [N]th previous modified buffer in buffers
+	only in the current tab page.
 
 
-:[N]TTpbNext [N]						*TTpbNext*
+:[N]TTpbNext [N]						*:TTpbNext*
 	Open a new tab page and go to [N]th next buffer in buffers only in the
-	current tab.
+	current tab page.
 
-:[N]TTpbPrevious [N]						*TTpbPrevious*
-	Open a new tab page and go to [N]th previous buffer in buffers only in the
-	current tab.
+:[N]TTpbPrevious [N]						*:TTpbPrevious*
+	Open a new tab page and go to [N]th previous buffer in buffers only in
+	the current tab page.
 
-:[N]TTpbModified [N]			*TTpbModified* *TTpbModifiedNext*
+:[N]TTpbModified [N]			*:TTpbModified* *:TTpbModifiedNext*
 :[N]TTpbModifiedNext [N]
-	Open a new tab page and go to [N]th next modified buffer in buffers only in
-	the current tab.
+	Open a new tab page and go to [N]th next modified buffer in buffers
+	only in the current tab page.
 
-:[N]TTpbModifiedPrevious [N]				*TTpbModifiedPrevious*
-	Open a new tab page and go to [N]th previous modified buffer in buffers only
-	in the current tab.
+:[N]TTpbModifiedPrevious [N]				*:TTpbModifiedPrevious*
+	Open a new tab page and go to [N]th previous modified buffer in
+	buffers only
+	in the current tab page.
 
 
-:TpbRewind[!]						*TpbRewind* *TpbFirst*
+:TpbRewind[!]						*:TpbRewind* *:TpbFirst*
 :TpbFirst[!]
-	Go to first buffer only in the current tab.
+	Go to first buffer only in the current tab page.
 	Also see |:brewind|, |:bfirst|.
 
-:TpbLast[!]							*TpbLast*
-	Go to last buffer only in the current tab.
+:TpbLast[!]							*:TpbLast*
+	Go to last buffer only in the current tab page.
 	Also see |:blast|.
 
-:TpbModifiedRewind[!]			*TpbModifiedRewind* *TpbModifiedFirst*
+:TpbModifiedRewind[!]			*:TpbModifiedRewind* *:TpbModifiedFirst*
 :TpbModifiedFirst[!]
-	Go to first modified buffer only in the current tab.
+	Go to first modified buffer only in the current tab page.
 
-:TpbModifiedLast[!]					*TpbModifiedLast*
-	Go to last modified buffer only in the current tab.
+:TpbModifiedLast[!]					*:TpbModifiedLast*
+	Go to last modified buffer only in the current tab page.
 
 
-:STpbRewind					*STpbRewind* *STpbFirst*
+:STpbRewind					*:STpbRewind* *:STpbFirst*
 :STpbFirst
-	Split window and go to first buffer only in the current tab.
+	Split window and go to first buffer only in the current tab page.
 	Also see |:sbrewind|, |:sbfirst|.
 
-:STpbLast							*STpbLast*
-	Split window and go to last buffer only in the current tab.
+:STpbLast							*:STpbLast*
+	Split window and go to last buffer only in the current tab page.
 	Also see |:sblast|.
 
-:STpbModifiedRewind			*STpbModifiedRewind* *STpbModifiedFirst*
+:STpbModifiedRewind			*:STpbModifiedRewind* *:STpbModifiedFirst*
 :STpbModifiedFirst
-	Split window and go to first modified buffer only in the current tab.
+	Split window and go to first modified buffer only in the current tab
+	page.
 
-:STpbModifiedLast					*STpbModifiedLast*
-	Split window and go to last modified buffer only in the current tab.
+:STpbModifiedLast					*:STpbModifiedLast*
+	Split window and go to last modified buffer only in the current tab
+	page.
 
 
-:VTpbRewind					*VTpbRewind* *VTpbFirst*
+:VTpbRewind					*:VTpbRewind* *:VTpbFirst*
 :VTpbFirst
-	Split vertically and go to first buffer only in the current tab.
+	Split vertically and go to first buffer only in the current tab page.
 
-:VTpbLast							*VTpbLast*
-	Split vertically and go to last buffer only in the current tab.
+:VTpbLast							*:VTpbLast*
+	Split vertically and go to last buffer only in the current tab page.
 
-:VTpbModifiedRewind			*VTpbModifiedRewind* *VTpbModifiedFirst*
+:VTpbModifiedRewind			*:VTpbModifiedRewind* *:VTpbModifiedFirst*
 :VTpbModifiedFirst
 	Split vertically and go to first modified buffer only in the current
-	tab.
+	tab page.
 
-:VTpbModifiedLast					*VTpbModifiedLast*
+:VTpbModifiedLast					*:VTpbModifiedLast*
 	Split vertically and go to last modified buffer only in the current
-	tab.
+	tab page.
 
 
-:TTpbRewind					*TTpbRewind* *TTpbFirst*
+:TTpbRewind					*:TTpbRewind* *:TTpbFirst*
 :TTpbFirst
-	Open a new tab page and go to first buffer only in the current tab.
+	Open a new tab page and go to first buffer only in the current tab
+	page.
 
-:TTpbLast							*TTpbLast*
-	Open a new tab page and go to last buffer only in the current tab.
+:TTpbLast							*:TTpbLast*
+	Open a new tab page and go to last buffer only in the current tab
+	page.
 
-:TTpbModifiedRewind			*TTpbModifiedRewind* *TTpbModifiedFirst*
+:TTpbModifiedRewind			*:TTpbModifiedRewind* *:TTpbModifiedFirst*
 :TTpbModifiedFirst
 	Open a new tab page and go to first modified buffer only in the
-	current tab.
+	current tab page.
 
-:TTpbModifiedLast					*TTpbModifiedLast*
+:TTpbModifiedLast					*:TTpbModifiedLast*
 	Open a new tab page and go to last modified buffer only in the current
-	tab.
+	tab page.
 
 
-:[N]TpbUnhide [N]				*TpbUnhide* *STpbUnhide*
+:[N]TpbUnhide [N]				*:TpbUnhide* *:STpbUnhide*
 :[N]STpbUnhide [N]
 	Rearrange the screen to open one window for each loaded buffer only in
-	the current tab.
+	the current tab page.
 	Also see |:unhide|, |:sunhide|.
 
-:[N]VTpbUnhide [N]						*VTpbUnhide*
+:[N]VTpbUnhide [N]						*:VTpbUnhide*
 	Rearrange the screen to open one vertically window for each loaded
-	buffer only in the current tab.
+	buffer only in the current tab page.
 
-:[N]TTpbUnhide [N]						*TTpbUnhide*
+:[N]TTpbUnhide [N]						*:TTpbUnhide*
 	Rearrange the screen to open one tab for each loaded buffer only in
-	the current tab.
+	the current tab page.
 
 
-:[N]TpbAll [N]						*TpbAll* *STpbAll*
+:[N]TpbAll [N]						*:TpbAll* *:STpbAll*
 :[N]STpbAll [N]
 	Rearrange the screen to open one window for each buffer only in the
-	current tab.
+	current tab page.
 	Also see |:unhide|, |:sunhide|.
 
-:[N]VTpbAll [N]							*VTpbAll*
+:[N]VTpbAll [N]							*:VTpbAll*
 	Rearrange the screen to open one vertically window for each buffer
-	only in the current tab.
+	only in the current tab page.
 
-:[N]TTpbAll [N]							*TTpbAll*
+:[N]TTpbAll [N]							*:TTpbAll*
 	Rearrange the screen to open one tab for each buffer only in the
-	current tab.
+	current tab page.
 
 
 ==============================================================================
