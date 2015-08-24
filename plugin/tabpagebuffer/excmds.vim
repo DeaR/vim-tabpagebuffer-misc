@@ -33,9 +33,6 @@ let g:loaded_tabpagebuffer_excmds = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-let g:tabpagebuffer#excmds#delete_keeptabpage =
-  \ get(g:, 'tabpagebuffer#excmds#delete_keeptabpage', 0)
-
 command! -bang -bar
   \ TpbFiles
   \ call tabpagebuffer#excmds#ls('files<bang>')
@@ -72,100 +69,100 @@ command! -bang -bar
 command! -bang -bar -range=0 -nargs=?
   \ TpbBuffer
   \ call tabpagebuffer#excmds#buffer('buffer<bang>',
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%' )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%')
 command! -bar -range=0 -nargs=?
   \ STpbBuffer
   \ call tabpagebuffer#excmds#buffer('sbuffer',
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%' )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%')
 command! -bar -range=0 -nargs=?
   \ VTpbBuffer
   \ call tabpagebuffer#excmds#buffer('vertical sbuffer',
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%' )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%')
 command! -bar -range=0 -nargs=?
   \ TTpbBuffer
   \ call tabpagebuffer#excmds#buffer('tab sbuffer',
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%' )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : '%')
 
 command! -bang -bar -range=0 -nargs=?
   \ TpbNext
   \ call tabpagebuffer#excmds#next('buffer<bang>', 1, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bang -bar -range=0 -nargs=?
   \ TpbPrevious
   \ call tabpagebuffer#excmds#next('buffer<bang>', 0, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bang -bar -range=0 -nargs=?
   \ TpbModified
   \ call tabpagebuffer#excmds#next('buffer<bang>', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bang -bar -range=0 -nargs=?
   \ TpbModifiedNext
   \ call tabpagebuffer#excmds#next('buffer<bang>', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bang -bar -range=0 -nargs=?
   \ TpbModifiedPrevious
   \ call tabpagebuffer#excmds#next('buffer<bang>', 0, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ STpbNext
   \ call tabpagebuffer#excmds#next('sbuffer', 1, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ STpbPrevious
   \ call tabpagebuffer#excmds#next('sbuffer', 0, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ STpbModified
   \ call tabpagebuffer#excmds#next('sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ STpbModifiedNext
   \ call tabpagebuffer#excmds#next('sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ STpbModifiedPrevious
   \ call tabpagebuffer#excmds#next('sbuffer', 0, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ VTpbNext
   \ call tabpagebuffer#excmds#next('vertical sbuffer', 1, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ VTpbPrevious
   \ call tabpagebuffer#excmds#next('vertical sbuffer', 0, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ VTpbModified
   \ call tabpagebuffer#excmds#next('vertical sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ VTpbModifiedNext
   \ call tabpagebuffer#excmds#next('vertical sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ VTpbModifiedPrevious
   \ call tabpagebuffer#excmds#next('vertical sbuffer', 0, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ TTpbNext
   \ call tabpagebuffer#excmds#next('tab sbuffer', 1, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ TTpbPrevious
   \ call tabpagebuffer#excmds#next('tab sbuffer', 0, 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ TTpbModified
   \ call tabpagebuffer#excmds#next('tab sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ TTpbModifiedNext
   \ call tabpagebuffer#excmds#next('tab sbuffer', 1, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 command! -bar -range=0 -nargs=?
   \ TTpbModifiedPrevious
   \ call tabpagebuffer#excmds#next('tab sbuffer', 0, 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1 )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : 1)
 
 command! -bang -bar
   \ TpbRewind
@@ -243,36 +240,36 @@ command! -bar
 command! -bar -range=0 -nargs=?
   \ TpbUnhide
   \ call tabpagebuffer#excmds#unhide('sbuffer', 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ STpbUnhide
   \ call tabpagebuffer#excmds#unhide('sbuffer', 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ VTpbUnhide
   \ call tabpagebuffer#excmds#unhide('vertical sbuffer', 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ TTpbUnhide
   \ call tabpagebuffer#excmds#unhide('tab sbuffer', 1,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 
 command! -bar -range=0 -nargs=?
   \ TpbAll
   \ call tabpagebuffer#excmds#unhide('sbuffer', 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ STpbAll
   \ call tabpagebuffer#excmds#unhide('sbuffer', 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ VTpbAll
   \ call tabpagebuffer#excmds#unhide('vertical sbuffer', 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 command! -bar -range=0 -nargs=?
   \ TTpbAll
   \ call tabpagebuffer#excmds#unhide('tab sbuffer', 0,
-  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$') )
+  \   strlen(<q-args>) ? <q-args> : <count> ? <line1> : bufnr('$'))
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -28,6 +28,9 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+let g:tabpagebuffer#excmds#delete_keeptabpage =
+  \ get(g:, 'tabpagebuffer#excmds#delete_keeptabpage', 0)
+
 function! s:echoerr(...)
   echohl ErrorMsg
   echomsg join(a:000)
