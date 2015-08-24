@@ -56,6 +56,8 @@ g:tabpagebuffer#excmds#delete_keeptabpage
 	|:TpbDeleteAll|, |:TpbWipeoutAll|, |:TpbUnloadAll| keep current tab
 	page.
 
+	The default value is 0.
+
 ------------------------------------------------------------------------------
 COMMANDS				*tabpagebuffer-excmds-commands*
 
