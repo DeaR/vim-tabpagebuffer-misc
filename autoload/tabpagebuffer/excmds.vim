@@ -1,7 +1,7 @@
 " ExCmd for Tabpage Buffer
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Aug-2015.
+" Last Change:  25-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -92,14 +92,18 @@ function! tabpagebuffer#excmds#ls(command)
   endfor
 endfunction
 
-function! tabpagebuffer#excmds#delete(command, args)
+function! tabpagebuffer#excmds#delete(command, bufnames)
   let tpb = s:get_tabpagebuffer()
-  let bufs = filter(
-    \ map(a:args, 'v:val =~ "^\\d\\+$" ? str2nr(v:val) : bufnr(v:val)'),
+  let bufs = !len(a:bufnames) ? [bufnr('%')] : filter(
+    \ map(a:bufnames, 'v:val =~ "^\\d\\+$" ? str2nr(v:val) : bufnr(v:val)'),
     \ 'index(tpb, v:val) >= 0')
   " echo 'bufs:' bufs
   if !len(bufs)
-    " E516
+    " E93: More than one match for %s
+    " E94: No matching buffer for %s
+    " E515: No buffers were unloaded
+    " E516: No buffers were deleted
+    " E517: No buffers were wiped out
     return
   endif
 
@@ -126,28 +130,46 @@ function! tabpagebuffer#excmds#delete(command, args)
     endif
   endtry
 endfunction
-
-function! tabpagebuffer#excmds#delete_all(command)
-  call tabpagebuffer#excmds#delete(a:command, s:get_tabpagebuffer())
+function! tabpagebuffer#excmds#delete_excmd(command, count, line1, line2, ...)
+  call tabpagebuffer#excmds#delete(
+    \ a:command,
+    \ extend(copy(a:000), a:count ? range(a:line1, a:line2, 1) : []))
 endfunction
 
-function! tabpagebuffer#excmds#buffer(command, count)
-  let pop = a:count =~ '^\d\+$' ? str2nr(a:count) : bufnr(a:count)
+function! tabpagebuffer#excmds#delete_all(command, count)
+  call tabpagebuffer#excmds#delete(
+    \ a:command,
+    \ sort(s:get_tabpagebuffer(),
+    \   has('patch-7.4.341') ? 'n' : 's:numerical_sort')[:a:count ? a:count : -1])
+endfunction
+
+function! tabpagebuffer#excmds#buffer(command, bufname)
+  let pop = a:bufname =~ '^\d\+$' ? str2nr(a:bufname) : bufnr(a:bufname)
   " echo 'pop:' pop
   if index(s:get_tabpagebuffer(), pop) < 0
-    " E86
+    " E86: Cannot go to buffer %ld
+    " E93: More than one match for %s
+    " E94: No matching buffer for %s
     return
   endif
 
   call s:execute(a:command, pop)
 endfunction
+function! tabpagebuffer#excmds#buffer_excmd(command, count, args)
+  let m = matchlist(a:args, '^\(+.*\\\@<! \)\?\(.*\)')
+  call tabpagebuffer#excmds#buffer(
+    \ a:command . ' ' . m[1],
+    \ strlen(m[2]) ? m[2] : a:count ? a:count : '%')
+endfunction
 
-function! tabpagebuffer#excmds#next(command, forward, modified, count)
+function! tabpagebuffer#excmds#next(forward, modified, command, count)
   let bufs = filter(s:get_tabpagebuffer(),
     \ 'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))')
   " echo 'bufs:' bufs
   if !len(bufs)
-    " E84
+    " E84: No modified buffer found
+    " E87: Cannot go beyond last buffer
+    " E88: Cannot go before first buffer
     return
   endif
 
@@ -159,8 +181,14 @@ function! tabpagebuffer#excmds#next(command, forward, modified, count)
 
   call s:execute(a:command, pop)
 endfunction
+function! tabpagebuffer#excmds#next_excmd(forward, modified, command, count, args)
+  let m = matchlist(a:args, '^\(+.*\\\@<! \)\?\(.*\)')
+  call tabpagebuffer#excmds#next(a:forward, a:modified,
+    \ a:command . ' ' . m[1],
+    \ m[2] =~ '^\d\+$' ? m[2] : a:count ? a:count : 1)
+endfunction
 
-function! tabpagebuffer#excmds#rewind(command, forward, modified)
+function! tabpagebuffer#excmds#rewind(forward, modified, command)
   let bufs = filter(s:get_tabpagebuffer(),
     \ 'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))')
   " echo 'bufs:' bufs
@@ -175,8 +203,12 @@ function! tabpagebuffer#excmds#rewind(command, forward, modified)
 
   call s:execute(a:command, pop)
 endfunction
+function! tabpagebuffer#excmds#rewind_excmd(forward, modified, command, args)
+  call tabpagebuffer#excmds#rewind(a:forward, a:modified,
+    \ a:command . ' ' . a:args)
+endfunction
 
-function! tabpagebuffer#excmds#unhide(command, loaded, count)
+function! tabpagebuffer#excmds#unhide(loaded, command, count)
   let bufs = filter(s:get_tabpagebuffer(),
     \ 'buflisted(v:val) && (!a:loaded || bufloaded(v:val))')
   " echo 'bufs:' bufs
@@ -193,7 +225,7 @@ function! tabpagebuffer#excmds#unhide(command, loaded, count)
     try
       set eventignore+=BufLeave,WinLeave,BufEnter,WinEnter
       call s:execute('buffer!', bufs[0])
-      call s:executes(map((bufs[:a:count])[1:-1], '[a:command, v:val]'))
+      call s:executes(map(bufs[1:a:count ? a:count : -1], '[a:command, v:val]'))
     finally
       let &eventignore = save_ei
     endtry
