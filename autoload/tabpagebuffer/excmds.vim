@@ -139,7 +139,7 @@ endfunction
 function! tabpagebuffer#excmds#delete_all(command, count)
   call tabpagebuffer#excmds#delete(
     \ a:command,
-    \ sort(s:get_tabpagebuffer(),
+    \ sort(filter(s:get_tabpagebuffer(), 'bufexists(v:val)'),
     \   has('patch-7.4.341') ? 'n' : 's:numerical_sort')[:a:count ? a:count : -1])
 endfunction
 
