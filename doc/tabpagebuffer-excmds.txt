@@ -70,24 +70,21 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	Also see |:files||, |:buffers|, |:ls|.
 
 
-:[N]TpbDelete[!]						*:TpbDelete*
-:TpbDelete[!] [N]
+:[N]TpbDelete[!] [N]						*:TpbDelete*
 :TpbDelete[!] {bufname}
 :TpbDelete[!] N1 N2 ...
 :N,MTpbDelete[!]
 	Delete buffer belonging to the current tab page.
 	Also see |:bdelete|.
 
-:[N]TpbWipeout[!]						*:TpbWipeout*
-:TpbWipeout[!] [N]
+:[N]TpbWipeout[!] [N]						*:TpbWipeout*
 :TpbWipeout[!] {bufname}
 :TpbWipeout[!] N1 N2 ...
 :N,MTpbWipeout[!]
 	Really delete buffer belonging to the current tab page.
 	Also see |:bwipeout|.
 
-:[N]TpbUnload[!]						*:TpbUnload*
-:TpbUnload[!] [N]
+:[N]TpbUnload[!] [N]						*:TpbUnload*
 :TpbUnload[!] {bufname}
 :TpbUnload[!] N1 N2 ...
 :N,MTpbUnload[!]
@@ -154,7 +151,7 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	page.
 	Also see |:sbnext|, |+cmd|.
 
-:[N]STpbPrevious [N]					*:STpbPrevious*
+:[N]STpbPrevious [+cmd] [N]				*:STpbPrevious*
 	Split window and go to [N]th previous buffer belonging to the current
 	tab page.
 	Also see |:sbprevious|, |+cmd|.
