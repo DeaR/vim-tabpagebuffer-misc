@@ -24,12 +24,18 @@ License: MIT license  {{{
 ==============================================================================
 CONTENTS				*tabpagebuffer-excmds-contents*
 
-REQUIREMENTS				|tabpagebuffer-excmds-requirements|
 INTRODUCTION				|tabpagebuffer-excmds-introduction|
+REQUIREMENTS				|tabpagebuffer-excmds-requirements|
 INTERFACE				|tabpagebuffer-excmds-interface|
   VARIABLES				|tabpagebuffer-excmds-variables|
   COMMANDS				|tabpagebuffer-excmds-commands|
 CHANGELOG				|tabpagebuffer-excmds-changelog|
+
+
+==============================================================================
+INTRODUCTION				*tabpagebuffer-excmds-introduction*
+
+Alternate Ex commands for buffer belonging to the current tab.
 
 
 ==============================================================================
@@ -39,10 +45,6 @@ REQUIREMENTS				*tabpagebuffer-excmds-requirements*
 
 |tabpagebuffer| <https://github.com/Shougo/tabpagebuffer.vim>
 |ctrlspace|     <http://www.vim.org/scripts/script.php?script_id=4789>
-
-
-==============================================================================
-INTRODUCTION				*tabpagebuffer-excmds-introduction*
 
 
 ==============================================================================
