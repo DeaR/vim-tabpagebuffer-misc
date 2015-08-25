@@ -63,7 +63,7 @@ g:tabpagebuffer#excmds#delete_keeptabpage
 ------------------------------------------------------------------------------
 COMMANDS				*tabpagebuffer-excmds-commands*
 
-:TpbFiles[!]					*:TpbFiles* *:TpbBuffers* *:TpbLs*
+:TpbFiles[!]				*:TpbFiles* *:TpbBuffers* *:TpbLs*
 :TpbBuffers[!]
 :TpbLs[!]
 	Show all buffers belonging to the current tab page.
@@ -95,16 +95,16 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	Also see |:bunload|.
 
 
-:[N]TpbDeleteAll[!] [N]						*:TpbDeleteAll*
+:[N]TpbDeleteAll[!] [N]					*:TpbDeleteAll*
 	Delete all buffers belonging to the current tab page.  When a count is
 	given, this is the maximum number of windows to delete.
 
-:[N]TpbWipeoutAll[!] [N]					*:TpbWipeoutAll*
+:[N]TpbWipeoutAll[!] [N]				*:TpbWipeoutAll*
 	Really delete all buffers belonging to the current tab page.  When a
 	count is given, this is the maximum number of windows to really
 	delete.
 
-:[N]TpbUnloadAll[!] [N]						*:TpbUnloadAll*
+:[N]TpbUnloadAll[!] [N]					*:TpbUnloadAll*
 	Unload all buffers belonging to the current tab page.  When a count is
 	given, this is the maximum number of windows to unload.
 
@@ -154,7 +154,7 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	page.
 	Also see |:sbnext|, |+cmd|.
 
-:[N]STpbPrevious [N]						*:STpbPrevious*
+:[N]STpbPrevious [N]					*:STpbPrevious*
 	Split window and go to [N]th previous buffer belonging to the current
 	tab page.
 	Also see |:sbprevious|, |+cmd|.
@@ -165,7 +165,7 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	current tab page.
 	Also see |:sbmodified|, |+cmd|.
 
-:[N]STpbModifiedPrevious [+cmd] [N]			*:STpbModifiedPrevious*
+:[N]STpbModifiedPrevious [+cmd] [N]		*:STpbModifiedPrevious*
 	Split window and go to [N]th previous modified buffer belonging to the
 	current tab page.
 	Also see |+cmd|.
@@ -176,18 +176,18 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	tab page.
 	Also see |+cmd|.
 
-:[N]VTpbPrevious [+cmd] [N]					*:VTpbPrevious*
+:[N]VTpbPrevious [+cmd] [N]				*:VTpbPrevious*
 	Split vertically and go to [N]th previous buffer belonging to the
 	current tab page.
 	Also see |+cmd|.
 
-:[N]VTpbModified [+cmd] [N]			*:VTpbModified* *:VTpbModifiedNext*
+:[N]VTpbModified [+cmd] [N]		*:VTpbModified* *:VTpbModifiedNext*
 :[N]VTpbModifiedNext [+cmd] [N]
 	Split vertically and go to [N]th next modified buffer belonging to the
 	current tab page.
 	Also see |+cmd|.
 
-:[N]VTpbModifiedPrevious [+cmd] [N]				*:VTpbModifiedPrevious*
+:[N]VTpbModifiedPrevious [+cmd] [N]		*:VTpbModifiedPrevious*
 	Split vertically and go to [N]th previous modified buffer belonging to
 	the current tab page.
 	Also see |+cmd|.
@@ -198,12 +198,12 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 	current tab page.
 	Also see |+cmd|.
 
-:[N]TTpbPrevious [+cmd] [N]					*:TTpbPrevious*
+:[N]TTpbPrevious [+cmd] [N]				*:TTpbPrevious*
 	Open a new tab page and go to [N]th previous buffer belonging to the
 	current tab page.
 	Also see |+cmd|.
 
-:[N]TTpbModified [+cmd] [N]			*:TTpbModified* *:TTpbModifiedNext*
+:[N]TTpbModified [+cmd] [N]		*:TTpbModified* *:TTpbModifiedNext*
 :[N]TTpbModifiedNext [+cmd] [N]
 	Open a new tab page and go to [N]th next modified buffer belonging to
 	the current tab page.
