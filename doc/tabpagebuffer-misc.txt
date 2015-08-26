@@ -344,7 +344,7 @@ COMMANDS					*tabpagebuffer-misc-commands*
 	of windows to open.
 
 ------------------------------------------------------------------------------
-FUNCTIONS					*tabpagebuffer-misc-commands*
+FUNCTIONS					*tabpagebuffer-misc-functions*
 
 					*tabpagebuffer#function#buflist()*
 tabpagebuffer#function#buflist([{tabnr}])
