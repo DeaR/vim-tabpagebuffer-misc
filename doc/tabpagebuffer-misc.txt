@@ -1,4 +1,4 @@
-*tabpagebuffer-excmds.txt*			*tabpagebuffer-excmds*
+*tabpagebuffer-misc.txt*			*tabpagebuffer-misc*
 
 Version: 1.0.0
 Author : DeaR <nayuri@kuonn.mydns.jp>
@@ -22,24 +22,26 @@ License: MIT license  {{{
 }}}
 
 ==============================================================================
-CONTENTS				*tabpagebuffer-excmds-contents*
+CONTENTS					*tabpagebuffer-misc-contents*
 
-INTRODUCTION				|tabpagebuffer-excmds-introduction|
-REQUIREMENTS				|tabpagebuffer-excmds-requirements|
-INTERFACE				|tabpagebuffer-excmds-interface|
-  VARIABLES				|tabpagebuffer-excmds-variables|
-  COMMANDS				|tabpagebuffer-excmds-commands|
-CHANGELOG				|tabpagebuffer-excmds-changelog|
-
-
-==============================================================================
-INTRODUCTION				*tabpagebuffer-excmds-introduction*
-
-Alternate Ex commands for buffer belonging to the current tab.
+INTRODUCTION				|tabpagebuffer-misc-introduction|
+REQUIREMENTS				|tabpagebuffer-misc-requirements|
+INTERFACE					|tabpagebuffer-misc-interface|
+  VARIABLES					|tabpagebuffer-misc-variables|
+  COMMANDS					|tabpagebuffer-misc-commands|
+  FUNCTIONS					|tabpagebuffer-misc-functions|
+ERROR CODE					|tabpagebuffer-misc-errorcode|
+CHANGELOG					|tabpagebuffer-misc-changelog|
 
 
 ==============================================================================
-REQUIREMENTS				*tabpagebuffer-excmds-requirements*
+INTRODUCTION				*tabpagebuffer-misc-introduction*
+
+To control the buffer belonging to the tab page.
+
+
+==============================================================================
+REQUIREMENTS				*tabpagebuffer-misc-requirements*
 
 - |tabpagebuffer| or |ctrlspace|
 
@@ -48,20 +50,21 @@ REQUIREMENTS				*tabpagebuffer-excmds-requirements*
 
 
 ==============================================================================
-INTERFACE				*tabpagebuffer-excmds-interface*
+INTERFACE					*tabpagebuffer-misc-interface*
 ------------------------------------------------------------------------------
-VARIABLES				*tabpagebuffer-excmds-variables*
+VARIABLES					*tabpagebuffer-misc-variables*
 
-				*g:tabpagebuffer#excmds#delete_keeptabpage*
-g:tabpagebuffer#excmds#delete_keeptabpage
+				*g:tabpagebuffer#misc#delete_keeptabpage*
+g:tabpagebuffer#command#bdelete_keeptabpage
 	If this variable is 1, |:TpbDelete|, |:TpbWipeout|, |:TpbUnload|,
 	|:TpbDeleteAll|, |:TpbWipeoutAll|, |:TpbUnloadAll| keep current tab
 	page.
 
 	The default value is 0.
 
+
 ------------------------------------------------------------------------------
-COMMANDS				*tabpagebuffer-excmds-commands*
+COMMANDS					*tabpagebuffer-misc-commands*
 
 :TpbFiles[!]				*:TpbFiles* *:TpbBuffers* *:TpbLs*
 :TpbBuffers[!]
@@ -74,56 +77,62 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 :TpbDelete[!] {bufname}
 :TpbDelete[!] N1 N2 ...
 :N,MTpbDelete[!]
-	Delete buffer belonging to the current tab page.
+	If buffer [N] (default: current buffer) belonging to the current tab
+	page, be delete it.
 	Also see |:bdelete|.
 
 :[N]TpbWipeout[!] [N]						*:TpbWipeout*
 :TpbWipeout[!] {bufname}
 :TpbWipeout[!] N1 N2 ...
 :N,MTpbWipeout[!]
-	Really delete buffer belonging to the current tab page.
+	If buffer [N] (default: current buffer) belonging to the current tab
+	page, be really delete it.
 	Also see |:bwipeout|.
 
 :[N]TpbUnload[!] [N]						*:TpbUnload*
 :TpbUnload[!] {bufname}
 :TpbUnload[!] N1 N2 ...
 :N,MTpbUnload[!]
-	Unload buffer belonging to the current tab page.
+	If buffer [N] (default: current buffer) belonging to the current tab
+	page, be unload it.
 	Also see |:bunload|.
 
 
 :[N]TpbDeleteAll[!] [N]					*:TpbDeleteAll*
 	Delete all buffers belonging to the current tab page.  When a count is
-	given, this is the maximum number of windows to delete.
+	given, this is the maximum number of buffers to delete.
 
 :[N]TpbWipeoutAll[!] [N]				*:TpbWipeoutAll*
 	Really delete all buffers belonging to the current tab page.  When a
-	count is given, this is the maximum number of windows to really
+	count is given, this is the maximum number of buffers to really
 	delete.
 
 :[N]TpbUnloadAll[!] [N]					*:TpbUnloadAll*
 	Unload all buffers belonging to the current tab page.  When a count is
-	given, this is the maximum number of windows to unload.
+	given, this is the maximum number of buffers to unload.
 
 
 :[N]TpbBuffer[!] [+cmd] [N]					*:TpbBuffer*
 :TpbBuffer[!] [+cmd] {bufname}
-	Edit buffer belonging to the current tab page.
+	Edit buffer [N] (default: current buffer) belonging to
+	the current tab page.
 	Also see |:buffer|, |+cmd|.
 
 :[N]STpbBuffer [+cmd] [N]					*:STpbBuffer*
 :STpbBuffer [+cmd] {bufname}
-	Split window and edit buffer belonging to the current tab page.
+	Split window and edit buffer [N] belonging to the current tab page.
 	Also see |:sbuffer|, |+cmd|.
 
 :[N]VTpbBuffer [+cmd] [N]					*:VTpbBuffer*
 :VTpbBuffer [+cmd] {bufname}
-	Split vertically and edit buffer belonging to the current tab page.
+	Split vertically and edit buffer [N] belonging to the current tab
+	page.
 	Also see |+cmd|.
 
 :[N]TTpbBuffer [+cmd] [N]					*:TTpbBuffer*
 :TTpbBuffer [+cmd] {bufname}
-	Open a new tab page and edit buffer belonging to the current tab page.
+	Open a new tab page and edit buffer [N] belonging to the current tab
+	page.
 	Also see |+cmd|.
 
 
@@ -302,37 +311,231 @@ COMMANDS				*tabpagebuffer-excmds-commands*
 :[N]TpbUnhide [N]				*:TpbUnhide* *:STpbUnhide*
 :[N]STpbUnhide [N]
 	Rearrange the screen to open one window for each loaded buffer
-	belonging to the current tab page.
+	belonging to the current tab page.  When a count is given, this is the
+	maximum number of windows to open.
 	Also see |:unhide|, |:sunhide|.
 
 :[N]VTpbUnhide [N]						*:VTpbUnhide*
 	Rearrange the screen to open one vertically window for each loaded
-	buffer belonging to the current tab page.
+	buffer belonging to the current tab page.  When a count is given, this
+	is the maximum number of windows to open.
 
 :[N]TTpbUnhide [N]						*:TTpbUnhide*
 	Rearrange the screen to open one tab for each loaded buffer belonging
-	to the current tab page.
+	to the current tab page.  When a count is given, this is the maximum
+	number of windows to open.
 
 
 :[N]TpbAll [N]						*:TpbAll* *:STpbAll*
 :[N]STpbAll [N]
 	Rearrange the screen to open one window for each buffer belonging to
-	the current tab page.
+	the current tab page.  When a count is given, this is the maximum
+	number of windows to open.
 	Also see |:unhide|, |:sunhide|.
 
 :[N]VTpbAll [N]							*:VTpbAll*
 	Rearrange the screen to open one vertically window for each buffer
-	belonging to the current tab page.
+	belonging to the current tab page.  When a count is given, this is the
+	maximum number of windows to open.
 
 :[N]TTpbAll [N]							*:TTpbAll*
 	Rearrange the screen to open one tab for each buffer belonging to the
-	current tab page.
+	current tab page.  When a count is given, this is the maximum number
+	of windows to open.
+
+------------------------------------------------------------------------------
+FUNCTIONS					*tabpagebuffer-misc-commands*
+
+					*tabpagebuffer#function#buflist()*
+tabpagebuffer#function#buflist([{tabnr}])
+	The result is a |List|, where each item is the number of the buffer
+	belonging to the {tabnr}th tab page.  It contains |hidden-buffer| and
+	|unlisted-buffer|.
+	Also see |tabpagebuflist()|.
+
+					*tabpagebuffer#function#bufexists()*
+tabpagebuffer#function#bufexists({expr} [, {tabnr}])
+	The result is a |Number|, which is non-zero if a buffer belonging to
+	the {tabnr}th tab page called {expr} exists.
+	If {expr} is |Number|, that buffer number's name is given.
+	If {expr} is |String|, it must match a buffer name exactly.
+	Also see |bufexists()|.
+
+					*tabpagebuffer#function#bufname()*
+tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
+	The result is the name of a buffer belonging to the {tabnr}th tab
+	page.  When {error} is given, if the buffer doesn't exists, error
+	occurred.
+	If {expr} is a |Number|, that buffer number's name is given.
+	If {expr} is a |String|, it is used as a |file-pattern| to match with
+	the buffer names.
+	Also see |bufname()|.
+
+					*tabpagebuffer#function#bufnr()*
+tabpagebuffer#function#bufnr({expr} [, {create} [, {tabnr} [, {error}]]])
+	The result is the number of a buffer belonging to the {tabnr}th tab
+	page.  When {error} is given, if the buffer doesn't exists, error
+	occurred.
+	If {expr} is a |Number|, that buffer number's name is given.
+	If {expr} is a |String|, it is used as a |file-pattern| to match with
+	the buffer names.
+	Also see |bufnr()|.
+
+					*tabpagebuffer#command#ls()*
+tabpagebuffer#command#ls({command})
+	Show all buffers belonging to the current tab page.
+	{command} is used to show all buffers, e.g.: >
+		:call tabpagebuffer#command#ls('ls!')
+<	Also see |:TpbLs|.
+
+					*tabpagebuffer#command#bdelete()*
+tabpagebuffer#command#bdelete({command} [, {list}])
+	If buffer of item in {list} (default: current buffer) belonging to the
+	current tab page, be delete it.
+	If item in {list} is a |Number|, that buffer number's name is given.
+	If item in {list} is a |String|, it is used as a |file-pattern| to
+	match with the buffer names.
+	{command} is used to delete buffers, e.g.: >
+		:call tabpagebuffer#command#bdelete(
+		\ 'bwipeout!', [1, 2, 'foo', 3, 'bar', 4])
+<	Also see |:TpbDelete|.
+
+					*tabpagebuffer#command#bdelete_all()*
+tabpagebuffer#command#bdelete_all({command} [, {count}])
+	Delete all buffers belonging to the current tab page.  When {count} is
+	given, this is the maximum number of buffers to delete.
+	{command} is used to delete buffers, e.g.: >
+		:call tabpagebuffer#command#bdelete_all(
+		\ 'bwipeout!', 3)
+<	Also see |:TpbDeleteAll|.
+
+					*tabpagebuffer#command#buffer()*
+tabpagebuffer#command#buffer({command} [, {expr}])
+	Edit buffer {expr} (default: current buffer) belonging to the current
+	tab page.
+	If {expr} is a |Number|, that buffer number's name is given.
+	If {expr} is a |String|, it is used as a |file-pattern| to match with
+	the buffer names.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#buffer(
+		\ 'vertical sbuffer +setf\ vim', 3)
+<	Also see |:TpbBuffer|.
+
+					*tabpagebuffer#command#next()*
+tabpagebuffer#command#next({command} [, {count}])
+	Go to {count}th next buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#next(
+		\ 'vertical sbuffer +setf\ vim', 3)
+<	Also see |:TpbNext|.
+
+					*tabpagebuffer#command#previous()*
+tabpagebuffer#command#previous({command} [, {count}])
+	Go to {count}th previous buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#previsous(
+		\ 'vertical sbuffer +setf\ vim', 3)
+<	Also see |:TpbPrevious|.
+
+				*tabpagebuffer#command#modified_next()*
+tabpagebuffer#command#modified_next({command} [, {count}])
+	Go to {count}th next modified buffer belonging to the current tab
+	page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#modified_next(
+		\ 'vertical sbuffer +setf\ vim', 3)
+<	Also see |:TpbModifiedNext|.
+
+				*tabpagebuffer#command#modified_previous()*
+tabpagebuffer#command#modified_previous({command} [, {count}])
+	Go to {count}th previous modified buffer belonging to the current tab
+	page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#modified_previsous(
+		\ 'vertical sbuffer +setf\ vim', 3)
+<	Also see |:TpbModifiedPrevious|.
+
+					*tabpagebuffer#command#first()*
+tabpagebuffer#command#first({command})
+	Go to first buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#first(
+		\ 'vertical sbuffer +setf\ vim')
+<	Also see |:TpbFirst|.
+
+					*tabpagebuffer#command#last()*
+tabpagebuffer#command#last({command})
+	Go to last buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#last(
+		\ 'vertical sbuffer +setf\ vim')
+<	Also see |:TpbLast|.
+
+				*tabpagebuffer#command#modified_first()*
+tabpagebuffer#command#modified_first({command})
+	Go to first modified buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#modified_first(
+		\ 'vertical sbuffer +setf\ vim')
+<	Also see |:TpbModifiedFirst|.
+
+				*tabpagebuffer#command#modified_last()*
+tabpagebuffer#command#modified_last({command})
+	Go to last modified buffer belonging to the current tab page.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#modified_last(
+		\ 'vertical sbuffer +setf\ vim')
+<	Also see |:TpbModifiedLast|.
+
+					*tabpagebuffer#command#unhide()*
+tabpagebuffer#command#unhide({command} [, {count}])
+	Rearrange the screen to open one window for each loaded buffer
+	belonging to the current tab page.  When a {count} is given, this is
+	the maximum number of windows to open.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#unhide(
+		\ 'vertical sbuffer', 10)
+<	Also see |:TpbUnhide|.
+
+					*tabpagebuffer#command#ball()*
+tabpagebuffer#command#ball({command} [, {count}])
+	Rearrange the screen to open one window for each buffer belonging to
+	the current tab page.  When a {count} is given, this is the maximum
+	number of windows to open.
+	{command} is used to open buffer, e.g.: >
+		:call tabpagebuffer#command#ball(
+		\ 'vertical sbuffer', 10)
+<	Also see |:TpbAll|.
 
 
 ==============================================================================
-CHANGELOG				*tabpagebuffer-excmds-changelog*
+ERROR CODE					*tabpagebuffer-misc-errorcode*
 
-1.0.0	First version
+|E84|:	No modified buffer found
+|E87|:	Cannot go beyond last buffer
+|E88|:	Cannot go before first buffer
+|E93|:	More than one match for `expr`
+|E94|:	No matching buffer for `expr`
+|E488|:	Trailing characters
+|E515|:	No buffers were unloaded
+|E516|:	No buffers were deleted
+|E517|:	No buffers were wiped out
+
+								*ETPB101*
+ETPB101:	tabpagebuffer or ctrlspace plugin is not installed
+	Please install |tabpagebuffer| or |ctrlspace|.
+	Also see |tabpagebuffer-misc-requirements|.
+
+								*ETPB201*
+ETPB201:	No available buffer found
+	No way!  Buffers belonging to the current tab is all unlisted.
+
+
+==============================================================================
+CHANGELOG					*tabpagebuffer-misc-changelog*
+
+1.1.0	Re-create.
+1.0.0	First version.
 
 
 ==============================================================================
