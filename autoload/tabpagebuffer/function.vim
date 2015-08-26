@@ -105,7 +105,7 @@ function! tabpagebuffer#function#bufnr(expr, ...)
   endif
 
   let regpat = join(['\m', &fileignorecase ? '\c' : '\C',
-    \ s:glob2regpat(a:expr)], '')
+    \ s:file_pat_to_reg_pat(a:expr)], '')
   let bufs = filter(tabpagebuffer#function#buflist(tabnr),
     \ 'bufname(v:val) =~ regpat')
   if len(bufs) == 1
