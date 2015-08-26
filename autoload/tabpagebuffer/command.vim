@@ -276,8 +276,6 @@ function! s:unhide(loaded, command, count)
     \ 'buflisted(v:val) && (!a:loaded || bufloaded(v:val))')))
   " echo 'bufs:' bufs
   if !len(bufs)
-    throw join(['tabpagebuffer-misc:ETPB201:',
-      \ 'No available buffer found'])
     return
   endif
 

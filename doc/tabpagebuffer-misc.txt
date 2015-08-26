@@ -526,10 +526,6 @@ ETPB101:	tabpagebuffer or ctrlspace plugin is not installed
 	Please install |tabpagebuffer| or |ctrlspace|.
 	Also see |tabpagebuffer-misc-requirements|.
 
-								*ETPB201*
-ETPB201:	No available buffer found
-	No way!  Buffers belonging to the current tab is all unlisted.
-
 
 ==============================================================================
 CHANGELOG					*tabpagebuffer-misc-changelog*
