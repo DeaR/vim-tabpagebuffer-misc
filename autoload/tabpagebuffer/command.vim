@@ -156,7 +156,8 @@ endfunction
 " tabpagebuffer#command#buffer({command} [, {expr}])
 " E86: Cannot go to buffer %ld
 function! tabpagebuffer#command#buffer(command, ...)
-  let pop = tabpagebuffer#function#bufnr(a:0 ? a:1 : '%')
+  let tabnr = tabpagenr()
+  let pop = tabpagebuffer#function#bufnr(a:0 ? a:1 : '%', 0, tabnr, 1)
   " echo 'pop:' pop
   execute a:command pop
 endfunction
