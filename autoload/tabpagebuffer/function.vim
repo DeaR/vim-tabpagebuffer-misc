@@ -29,26 +29,56 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 " fileio.c
-function! s:file_pat_to_reg_pat(expr)
+function! s:glob2regpat(expr)
   if exists('*glob2regpat')
-    return glob2regpat('*' . a:expr . '*')
+    return glob2regpat(a:expr)
   endif
 
-  let s = []
-  for c in split(a:expr, '\zs')
-    if c == '*'
-      call add(s, '.*')
-    elseif c == '.' || c == '~'
-      call add(s, '\' . c)
-    elseif c == '?'
-      call add(s, '.')
-    elseif c == '\' || c == '/'
-      call add(s, '[\/]')
+  let pat = split(a:expr, '\zs')
+  let reg_pat = []
+  let nested = 0
+  let add_dollar = 0
+  if pat[0] != '*'
+    let pat = pat[1:]
+  else
+    call add(reg_pat, '^')
+  endif
+  if pat[-1] == '*'
+    let pat = pat[:-2]
+  else
+    let add_dollar = 1
+  endif
+  for p in pat
+    if p == '*'
+      call add(reg_pat, '.*')
+    elseif p == '.' || p == '~'
+      call add(reg_pat, '\' . p)
+    elseif p == '?'
+      call add(reg_pat, '.')
+    elseif p == '\' || p == '/'
+      call add(reg_pat, '[\/]')
+    elseif p == '{'
+      call add(reg_pat, '\(')
+      let nested += 1
+    elseif p == '}'
+      call add(reg_pat, '\}')
+      let nested -= 1
+    elseif p == ',' && nested
+      call add(reg_pat, '\|')
     else
-      call add(s, c)
+      call add(reg_pat, p)
     endif
   endfor
-  return join(s, '')
+  if nested < 0
+    throw join(['tabpagebuffer-misc:E219:',
+      \ 'Missing {.'])
+  elseif mested > 0
+    throw join(['tabpagebuffer-misc:E220:',
+      \ 'Missing }.'])
+  elseif add_dollar
+    call add(reg_pat, '$')
+  endif
+  return join(reg_pat, '')
 endfunction
 
 " tabpagebuffer#function#buflist([{tabnr}])
@@ -105,7 +135,7 @@ function! tabpagebuffer#function#bufnr(expr, ...)
   endif
 
   let regpat = join(['\m', &fileignorecase ? '\c' : '\C',
-    \ s:file_pat_to_reg_pat(a:expr)], '')
+    \ s:glob2regpat('*' . a:expr . '*')], '')
   let bufs = filter(tabpagebuffer#function#buflist(tabnr),
     \ 'bufname(v:val) =~ regpat')
   if len(bufs) == 1

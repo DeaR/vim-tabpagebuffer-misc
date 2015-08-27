@@ -516,6 +516,8 @@ ERROR CODE					*tabpagebuffer-misc-errorcode*
 |E88|:	Cannot go before first buffer
 |E93|:	More than one match for `expr`
 |E94|:	No matching buffer for `expr`
+|E219|:	Missing {.
+|E220|:	Missing }.
 |E488|:	Trailing characters
 |E515|:	No buffers were unloaded
 |E516|:	No buffers were deleted
