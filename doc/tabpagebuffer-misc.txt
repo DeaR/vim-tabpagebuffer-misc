@@ -332,7 +332,7 @@ COMMANDS					*tabpagebuffer-misc-commands*
 	Rearrange the screen to open one window for each buffer belonging to
 	the current tab page.  When a count is given, this is the maximum
 	number of windows to open.
-	Also see |:unhide|, |:sunhide|.
+	Also see |:ball|, |:sball|.
 
 :[N]VTpbAll [N]							*:VTpbAll*
 	Rearrange the screen to open one vertically window for each buffer
