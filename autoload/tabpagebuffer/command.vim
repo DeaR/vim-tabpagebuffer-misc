@@ -41,7 +41,12 @@ function! s:_numerical_sort(i1, i2)
   return a:i1 - a:i2
 endfunction
 function! s:numerical_sort(list)
-  return sort(copy(a:list), has('patch-7.4.341') ? 'n' : 's:_numerical_sort')
+  if has('patch-7.4.341') || v:version > 704 ||
+    \ (v:version == 704 && has('patch341'))
+    return sort(copy(a:list), 'n')
+  else
+    return sort(copy(a:list), 's:_numerical_sort')
+  endif
 endfunction
 
 function! s:doautocmd(...)

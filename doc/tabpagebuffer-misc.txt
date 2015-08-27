@@ -43,6 +43,7 @@ To control the buffer belonging to the tab page.
 ==============================================================================
 REQUIREMENTS				*tabpagebuffer-misc-requirements*
 
+- Vim 7.3 or later
 - |tabpagebuffer| or |ctrlspace|
 
 |tabpagebuffer| <https://github.com/Shougo/tabpagebuffer.vim>
