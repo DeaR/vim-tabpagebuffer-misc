@@ -33,7 +33,7 @@ function! s:SID_PREFIX()
 endfunction
 
 " fileio.c
-function! s:_glob2regpat(expr)
+function! s:file_pat_to_reg_pat(expr)
   let pat = split(a:expr, '\zs')
   let reg_pat = []
   let nested = 0
@@ -81,7 +81,7 @@ function! s:_glob2regpat(expr)
   return join(reg_pat, '')
 endfunction
 let s:glob2regpat = function(exists('*glob2regpat') ?
-  \ 'glob2regpat' : s:SID_PREFIX() . '_glob2regpat')
+  \ 'glob2regpat' : s:SID_PREFIX() . 'file_pat_to_reg_pat')
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)
