@@ -28,12 +28,12 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-" fileio.c
-function! s:glob2regpat(expr)
-  if exists('*glob2regpat')
-    return glob2regpat(a:expr)
-  endif
+function! s:SID_PREFIX()
+  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+endfunction
 
+" fileio.c
+function! s:_glob2regpat(expr)
   let pat = split(a:expr, '\zs')
   let reg_pat = []
   let nested = 0
@@ -72,7 +72,7 @@ function! s:glob2regpat(expr)
   if nested < 0
     throw join(['tabpagebuffer-misc:E219:',
       \ 'Missing {.'])
-  elseif mested > 0
+  elseif nested > 0
     throw join(['tabpagebuffer-misc:E220:',
       \ 'Missing }.'])
   elseif add_dollar
@@ -80,6 +80,8 @@ function! s:glob2regpat(expr)
   endif
   return join(reg_pat, '')
 endfunction
+let s:glob2regpat = function(exists('*glob2regpat') ?
+  \ 'glob2regpat' : s:SID_PREFIX() . '_glob2regpat')
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)

@@ -40,22 +40,17 @@ endfunction
 function! s:_numerical_sort(i1, i2)
   return a:i1 - a:i2
 endfunction
-function! s:numerical_sort(list)
-  if has('patch-7.4.341') || v:version > 704 ||
-    \ (v:version == 704 && has('patch341'))
-    return sort(copy(a:list), 'n')
-  else
-    return sort(copy(a:list), 's:_numerical_sort')
-  endif
-endfunction
+let s:numerical_sort =
+  \ has('patch-7.4.341') || v:version > 704 ||
+  \ (v:version == 704 && has('patch341')) ?
+  \   'n' : 's:_numerical_sort'
 
+let s:_doautocmd =
+  \ has('patch-7.3.438') || v:version > 703 ||
+  \ (v:version == 703 && has('patch438')) ?
+  \   '<nomodeline>' : ''
 function! s:doautocmd(...)
-  if has('patch-7.3.438') || v:version > 703 ||
-    \ (v:version == 703 && has('patch438'))
-    execute 'doautocmd' '<nomodeline>' join(a:000)
-  else
-    execute 'doautocmd' join(a:000)
-  endif
+  execute 'doautocmd' s:_doautocmd join(a:000)
 endfunction
 
 " tabpagebuffer#command#ls({command})
@@ -100,8 +95,8 @@ function! tabpagebuffer#command#bdelete(command, ...)
 
   let cancel = ''
   if g:tabpagebuffer#command#bdelete_keeptabpage && tabpagenr('$') > 1
-    let pop = get(s:numerical_sort(filter(tabpagebuffer#function#buflist(),
-      \ 'buflisted(v:val) && index(bufs, v:val) < 0')), -1)
+    let pop = get(sort(filter(tabpagebuffer#function#buflist(),
+      \ 'buflisted(v:val) && index(bufs, v:val) < 0'), s:numerical_sort), -1)
     " echo 'pop:' pop
     if pop
       execute 'sbuffer' pop
@@ -147,8 +142,9 @@ endfunction
 
 " tabpagebuffer#command#bdelete_all({command} [, {count}])
 function! tabpagebuffer#command#bdelete_all(command, ...)
-  call tabpagebuffer#command#bdelete(a:command, s:numerical_sort(
-    \ tabpagebuffer#function#buflist())[:(a:0 && a:1 ? a:1 : -1)])
+  call tabpagebuffer#command#bdelete(a:command,
+    \ sort(tabpagebuffer#function#buflist(),
+    \   s:numerical_sort)[:(a:0 && a:1 ? a:1 : -1)])
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
@@ -188,8 +184,10 @@ endfunction
 " E88: Cannot go before first buffer
 " E488: Trailing characters
 function! s:bnext(forward, modified, command, count)
-  let bufs = s:numerical_sort(filter(tabpagebuffer#function#buflist(),
-    \ 'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'))
+  let bufs = sort(
+    \ filter(tabpagebuffer#function#buflist(),
+    \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
+    \ s:numerical_sort)
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:modified
@@ -237,8 +235,10 @@ endfunction
 " tabpagebuffer#command#modified_last({command})
 " E84: No modified buffer found
 function! s:brewind(forward, modified, command)
-  let bufs = s:numerical_sort(filter(tabpagebuffer#function#buflist(),
-    \ 'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'))
+  let bufs = sort(
+    \ filter(tabpagebuffer#function#buflist(),
+    \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
+    \ s:numerical_sort)
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:modified
@@ -276,9 +276,10 @@ endfunction
 " tabpagebuffer#command#unhide({command} [, {count}])
 " tabpagebuffer#command#ball({command} [, {count}])
 function! s:unhide(loaded, command, count)
-  let bufs = reverse(s:numerical_sort(filter(
-    \ tabpagebuffer#function#buflist(),
-    \ 'buflisted(v:val) && (!a:loaded || bufloaded(v:val))')))
+  let bufs = reverse(sort(
+    \ filter(tabpagebuffer#function#buflist(),
+    \   'buflisted(v:val) && (!a:loaded || bufloaded(v:val))'),
+    \ s:numerical_sort))
   " echo 'bufs:' bufs
   if !len(bufs)
     return
