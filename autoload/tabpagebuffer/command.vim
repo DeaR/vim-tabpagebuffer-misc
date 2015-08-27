@@ -96,7 +96,7 @@ function! tabpagebuffer#command#bdelete(command, ...)
   let cancel = ''
   if g:tabpagebuffer#command#bdelete_keeptabpage && tabpagenr('$') > 1
     let pop = get(s:numerical_sort(filter(tabpagebuffer#function#buflist(),
-      \ 'buflisted(v:val)')), -1)
+      \ 'buflisted(v:val) && index(bufs, v:val) < 0')), -1)
     " echo 'pop:' pop
     if pop
       execute 'sbuffer' pop
