@@ -365,8 +365,8 @@ tabpagebuffer#function#bufexists({expr} [, {tabnr}])
 					*tabpagebuffer#function#bufname()*
 tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
 	The result is the name of a buffer belonging to the {tabnr}th tab
-	page.  When {error} is given, if the buffer doesn't exists, error
-	occurred.
+	page.  When {error} is given and it is non-zero, if the buffer doesn't
+	exists, error occurred.
 	If {expr} is a |Number|, that buffer number's name is given.
 	If {expr} is a |String|, it is used as a |file-pattern| to match with
 	the buffer names.
@@ -375,8 +375,10 @@ tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
 					*tabpagebuffer#function#bufnr()*
 tabpagebuffer#function#bufnr({expr} [, {create} [, {tabnr} [, {error}]]])
 	The result is the number of a buffer belonging to the {tabnr}th tab
-	page.  When {error} is given, if the buffer doesn't exists, error
-	occurred.
+	page.  When {create} is given and it is non-zero, a new, not
+	belong to the tab page, unlisted, buffer is created and its number is
+	returned.  When {error} is given and it is non-zero, if the buffer
+	doesn't exists, error occurred.
 	If {expr} is a |Number|, that buffer number's name is given.
 	If {expr} is a |String|, it is used as a |file-pattern| to match with
 	the buffer names.
