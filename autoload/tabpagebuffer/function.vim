@@ -128,7 +128,7 @@ function! tabpagebuffer#function#bufnr(expr, ...)
 
   let nr = bufnr(a:expr, create)
   if nr >= 0 || type(a:expr) == type(0)
-    if index(tabpagebuffer#function#buflist(tabnr), nr) >= 0
+    if create || index(tabpagebuffer#function#buflist(tabnr), nr) >= 0
       return nr
     elseif error
       throw join(['tabpagebuffer-misc:E94:',
