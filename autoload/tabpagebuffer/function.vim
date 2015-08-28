@@ -1,7 +1,7 @@
 " Functions for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2015.
+" Last Change:  28-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -127,7 +127,7 @@ function! tabpagebuffer#function#bufnr(expr, ...)
   let error  = get(a:000, 2)
 
   let nr = bufnr(a:expr, create)
-  if nr >= 0 || type(a:expr) == type(0)
+  if nr >= 0 || type(a:expr) == type(0) || a:expr == '%' || a:expr == '#'
     if create || index(tabpagebuffer#function#buflist(tabnr), nr) >= 0
       return nr
     elseif error

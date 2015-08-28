@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  27-Aug-2015.
+" Last Change:  28-Aug-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -95,10 +95,13 @@ function! tabpagebuffer#command#bdelete(command, ...)
 
   let cancel = ''
   if g:tabpagebuffer#command#bdelete_keeptabpage && tabpagenr('$') > 1
-    let pop = get(sort(filter(tabpagebuffer#function#buflist(),
-      \ 'buflisted(v:val) && index(bufs, v:val) < 0'), s:numerical_sort), -1)
+    let pop = get(filter(
+      \ add(sort(tabpagebuffer#function#buflist(), s:numerical_sort),
+      \   tabpagebuffer#function#bufnr('#')),
+      \ 'buflisted(v:val) && index(bufs, v:val) < 0 && ' .
+      \ 'getbufvar(v:val, "&filetype") != "qf"'), -1)
     " echo 'pop:' pop
-    if pop
+    if pop > 0
       execute 'sbuffer' pop
       let cancel = 'close!'
     else
