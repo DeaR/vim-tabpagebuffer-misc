@@ -88,10 +88,10 @@ function! tabpagebuffer#function#buflist(...)
   let tabnr = get(a:000, 0, tabpagenr())
   if exists('g:loaded_tabpagebuffer')
     return filter(map(keys(get(gettabvar(tabnr, ''), 'tabpagebuffer', {})),
-      \ 'str2nr(v:val)'), 'bufexists(v:val)') : []
+      \ 'str2nr(v:val)'), 'bufexists(v:val)')
   elseif exists('g:CtrlSpaceLoaded')
     return filter(map(keys(get(gettabvar(tabnr, ''), 'CtrlSpaceList', {})),
-      \ 'str2nr(v:val)'), 'bufexists(v:val)') : []
+      \ 'str2nr(v:val)'), 'bufexists(v:val)')
   else
     throw join(['tabpagebuffer-misc:ETPB101:',
       \ 'tabpagebuffer or ctrlspace plugin is not installed'])
