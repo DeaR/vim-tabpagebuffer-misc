@@ -28,8 +28,8 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:SID_PREFIX()
-  return matchstr(expand('<sfile>'), '<SNR>\d\+_\zeSID_PREFIX$')
+function! s:SID()
+  return matchstr(expand('<sfile>'), '<SNR>\zs\d\+\ze_SID$')
 endfunction
 
 " fileio.c
@@ -81,7 +81,7 @@ function! s:file_pat_to_reg_pat(expr)
   return join(reg_pat, '')
 endfunction
 let s:glob2regpat = function(exists('*glob2regpat') ?
-  \ 'glob2regpat' : s:SID_PREFIX() . 'file_pat_to_reg_pat')
+  \ 'glob2regpat' : ("\<SNR>" . s:SID() . '_file_pat_to_reg_pat'))
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)
