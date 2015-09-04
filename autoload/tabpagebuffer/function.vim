@@ -1,7 +1,7 @@
 " Functions for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2015.
+" Last Change:  04-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -87,11 +87,13 @@ let s:glob2regpat = function(exists('*glob2regpat') ?
 function! tabpagebuffer#function#buflist(...)
   let tabnr = get(a:000, 0, tabpagenr())
   if exists('g:loaded_tabpagebuffer')
-    return filter(map(keys(get(gettabvar(tabnr, ''), 'tabpagebuffer', {})),
-      \ 'str2nr(v:val)'), 'bufexists(v:val)')
+    let tbp = gettabvar(tabnr, 'tabpagebuffer')
+    return type(tbp) != type({}) ? [] :
+      \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
   elseif exists('g:CtrlSpaceLoaded')
-    return filter(map(keys(get(gettabvar(tabnr, ''), 'CtrlSpaceList', {})),
-      \ 'str2nr(v:val)'), 'bufexists(v:val)')
+    let tbp = gettabvar(tabnr, 'CtrlSpaceList')
+    return type(tbp) != type({}) ? [] :
+      \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
   else
     throw join(['tabpagebuffer-misc:ETPB101:',
       \ 'tabpagebuffer or ctrlspace plugin is not installed'])

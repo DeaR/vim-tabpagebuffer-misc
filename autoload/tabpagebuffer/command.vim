@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  28-Aug-2015.
+" Last Change:  03-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -124,7 +124,7 @@ function! tabpagebuffer#command#do_bdelete(command, count, line1, line2, args)
   let i = 0
   while i < strlen(a:args)
     let s = matchstr(a:args, '^\d\+\s\+', i)
-    if strlen(s)
+    if !empty(s)
       call add(args, str2nr(s))
       let i += strlen(s)
     else
@@ -171,7 +171,7 @@ function! tabpagebuffer#command#do_buffer(command, count, args)
     call tabpagebuffer#command#buffer(
       \ join([a:command, m[1]]),
       \ m[2] =~ '^\d\+$' ? str2nr(m[2]) :
-      \ strlen(m[2]) ? m[2] :
+      \ !empty(m[2]) ? m[2] :
       \ a:count ? a:count : '%')
   catch /.*/
     call s:echoerr(v:exception)
@@ -226,7 +226,7 @@ function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args
     endif
     call s:bnext(a:forward, a:modified,
       \ join([a:command, m[1]]),
-      \ strlen(m[2]) ? str2nr(m[2]) : a:count ? a:count : 1)
+      \ !empty(m[2]) ? str2nr(m[2]) : a:count ? a:count : 1)
   catch /.*/
     call s:echoerr(v:exception)
   endtry
