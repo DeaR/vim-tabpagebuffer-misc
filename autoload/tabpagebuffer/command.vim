@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  03-Sep-2015.
+" Last Change:  07-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -167,11 +167,12 @@ function! tabpagebuffer#command#buffer(command, ...)
 endfunction
 function! tabpagebuffer#command#do_buffer(command, count, args)
   try
-    let m = matchlist(a:args, '\m^\(+.*\\\@<! \+\)\=\(.*\)')
+    let p = matchstr(a:args, '\m^+.*\\\@<! \+')
+    let r = a:args[strlen(p):]
     call tabpagebuffer#command#buffer(
-      \ join([a:command, m[1]]),
-      \ m[2] =~ '^\d\+$' ? str2nr(m[2]) :
-      \ !empty(m[2]) ? m[2] :
+      \ join([a:command, p]),
+      \ r =~ '^\d\+$' ? str2nr(r) :
+      \ !empty(r) ? r :
       \ a:count ? a:count : '%')
   catch /.*/
     call s:echoerr(v:exception)
@@ -219,14 +220,15 @@ function! tabpagebuffer#command#bmodified_previous(command, ...)
 endfunction
 function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args)
   try
-    let m = matchlist(a:args, '\m^\(+.*\\\@<! \+\)\=\(.*\)')
-    if m[2] =~ '\D'
+    let p = matchstr(a:args, '\m^+.*\\\@<! \+')
+    let r = a:args[strlen(p):]
+    if r =~ '\D'
       throw join(['tabpagebuffer-misc:E488',
         \ 'Trailing characters'])
     endif
     call s:bnext(a:forward, a:modified,
-      \ join([a:command, m[1]]),
-      \ !empty(m[2]) ? str2nr(m[2]) : a:count ? a:count : 1)
+      \ join([a:command, p]),
+      \ !empty(r) ? str2nr(r) : a:count ? a:count : 1)
   catch /.*/
     call s:echoerr(v:exception)
   endtry
