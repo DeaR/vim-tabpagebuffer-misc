@@ -78,7 +78,7 @@ endfunction
 function! tabpagebuffer#command#bdelete(command, ...)
   let tabnr = tabpagenr()
   let bufs = !len(get(a:000, 0, [])) ? [bufnr('%')] :
-    \ map(a:1, 'tabpagebuffer#function#bufnr(v:val, 0, tabnr, 1)')
+    \ map(copy(a:1), 'tabpagebuffer#function#bufnr(v:val, 0, tabnr, 1)')
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:command =~# '\<bun'
