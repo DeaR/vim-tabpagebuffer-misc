@@ -1,7 +1,7 @@
 " Functions for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  04-Sep-2015.
+" Last Change:  07-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -71,17 +71,17 @@ function! s:file_pat_to_reg_pat(expr)
   endfor
   if nested < 0
     throw join(['tabpagebuffer-misc:E219:',
-      \ 'Missing {.'])
+    \ 'Missing {.'])
   elseif nested > 0
     throw join(['tabpagebuffer-misc:E220:',
-      \ 'Missing }.'])
+    \ 'Missing }.'])
   elseif add_dollar
     call add(reg_pat, '$')
   endif
   return join(reg_pat, '')
 endfunction
 let s:glob2regpat = function(exists('*glob2regpat') ?
-  \ 'glob2regpat' : ("\<SNR>" . s:SID() . '_file_pat_to_reg_pat'))
+\ 'glob2regpat' : ("\<SNR>" . s:SID() . '_file_pat_to_reg_pat'))
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)
@@ -89,14 +89,14 @@ function! tabpagebuffer#function#buflist(...)
   if exists('g:loaded_tabpagebuffer')
     let tbp = gettabvar(tabnr, 'tabpagebuffer')
     return type(tbp) != type({}) ? [] :
-      \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
+    \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
   elseif exists('g:CtrlSpaceLoaded')
     let tbp = gettabvar(tabnr, 'CtrlSpaceList')
     return type(tbp) != type({}) ? [] :
-      \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
+    \ filter(map(keys(tbp), 'str2nr(v:val)'), 'bufexists(v:val)')
   else
     throw join(['tabpagebuffer-misc:ETPB101:',
-      \ 'tabpagebuffer or ctrlspace plugin is not installed'])
+    \ 'tabpagebuffer or ctrlspace plugin is not installed'])
   endif
 endfunction
 
@@ -104,9 +104,9 @@ endfunction
 function! tabpagebuffer#function#bufexists(expr, ...)
   let tabnr = get(a:000, 0, tabpagenr())
   return bufexists(a:expr) && len(filter(
-    \ tabpagebuffer#function#buflist(tabnr),
-    \ type(a:expr) == type(0) ?
-    \   'v:val == a:expr' : 'bufname(v:val) == a:expr'))
+  \ tabpagebuffer#function#buflist(tabnr),
+  \ type(a:expr) == type(0) ?
+  \   'v:val == a:expr' : 'bufname(v:val) == a:expr'))
 endfunction
 
 " tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
@@ -132,25 +132,25 @@ function! tabpagebuffer#function#bufnr(expr, ...)
       return nr
     elseif error
       throw join(['tabpagebuffer-misc:E94:',
-        \ 'No matching buffer for', a:expr])
+      \ 'No matching buffer for', a:expr])
     else
       return -1
     endif
   endif
 
   let regpat = join(['\m', &fileignorecase ? '\c' : '\C',
-    \ s:glob2regpat('*' . a:expr . '*')], '')
+  \ s:glob2regpat('*' . a:expr . '*')], '')
   let bufs = filter(tabpagebuffer#function#buflist(tabnr),
-    \ 'bufname(v:val) =~ regpat')
+  \ 'bufname(v:val) =~ regpat')
   if len(bufs) == 1
     return bufs[0]
   elseif error
     if len(bufs)
       throw join(['tabpagebuffer-misc:E93:',
-        \ 'More than one match for', a:expr])
+      \ 'More than one match for', a:expr])
     else
       throw join(['tabpagebuffer-misc:E94:',
-        \ 'No matching buffer for', a:expr])
+      \ 'No matching buffer for', a:expr])
     endif
   else
     return -1

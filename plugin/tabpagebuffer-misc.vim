@@ -1,7 +1,7 @@
 " To control the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  26-Aug-2015.
+" Last Change:  07-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -34,269 +34,269 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 command! -bang -bar
-  \ TpbFiles
-  \ call tabpagebuffer#command#do_ls('files<bang>')
+\ TpbFiles
+\ call tabpagebuffer#command#do_ls('files<bang>')
 command! -bang -bar
-  \ TpbBuffers
-  \ call tabpagebuffer#command#do_ls('buffers<bang>')
+\ TpbBuffers
+\ call tabpagebuffer#command#do_ls('buffers<bang>')
 command! -bang -bar
-  \ TpbLs
-  \ call tabpagebuffer#command#do_ls('ls<bang>')
+\ TpbLs
+\ call tabpagebuffer#command#do_ls('ls<bang>')
 
 command! -bang -bar -range=0 -nargs=* -complete=buffer
-  \ TpbDelete
-  \ call tabpagebuffer#command#do_bdelete('bdelete<bang>',
-  \   <count>, <line1>, <line2>, <q-args>)
+\ TpbDelete
+\ call tabpagebuffer#command#do_bdelete('bdelete<bang>',
+\   <count>, <line1>, <line2>, <q-args>)
 command! -bang -bar -range=0 -nargs=* -complete=buffer
-  \ TpbWipeout
-  \ call tabpagebuffer#command#do_bdelete('bwipeout<bang>',
-  \   <count>, <line1>, <line2>, <q-args>)
+\ TpbWipeout
+\ call tabpagebuffer#command#do_bdelete('bwipeout<bang>',
+\   <count>, <line1>, <line2>, <q-args>)
 command! -bang -bar -range=0 -nargs=* -complete=buffer
-  \ TpbUnload
-  \ call tabpagebuffer#command#do_bdelete('bunload<bang>',
-  \   <count>, <line1>, <line2>, <q-args>)
+\ TpbUnload
+\ call tabpagebuffer#command#do_bdelete('bunload<bang>',
+\   <count>, <line1>, <line2>, <q-args>)
 
 command! -bang -bar -count
-  \ TpbDeleteAll
-  \ call tabpagebuffer#command#do_bdelete_all('bdelete<bang>',
-  \   <count>)
+\ TpbDeleteAll
+\ call tabpagebuffer#command#do_bdelete_all('bdelete<bang>',
+\   <count>)
 command! -bang -bar -count
-  \ TpbWipeoutAll
-  \ call tabpagebuffer#command#do_bdelete_all('bwipeout<bang>',
-  \   <count>)
+\ TpbWipeoutAll
+\ call tabpagebuffer#command#do_bdelete_all('bwipeout<bang>',
+\   <count>)
 command! -bang -bar -count
-  \ TpbUnloadAll
-  \ call tabpagebuffer#command#do_bdelete_all('bunload<bang>',
-  \   <count>)
+\ TpbUnloadAll
+\ call tabpagebuffer#command#do_bdelete_all('bunload<bang>',
+\   <count>)
 
 command! -bang -bar -count -nargs=? -complete=buffer
-  \ TpbBuffer
-  \ call tabpagebuffer#command#do_buffer('buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbBuffer
+\ call tabpagebuffer#command#do_buffer('buffer<bang>',
+\   <count>, <q-args>)
 command! -bar -count -nargs=? -complete=buffer
-  \ STpbBuffer
-  \ call tabpagebuffer#command#do_buffer('sbuffer',
-  \   <count>, <q-args>)
+\ STpbBuffer
+\ call tabpagebuffer#command#do_buffer('sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=? -complete=buffer
-  \ VTpbBuffer
-  \ call tabpagebuffer#command#do_buffer('vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbBuffer
+\ call tabpagebuffer#command#do_buffer('vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=? -complete=buffer
-  \ TTpbBuffer
-  \ call tabpagebuffer#command#do_buffer('tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbBuffer
+\ call tabpagebuffer#command#do_buffer('tab sbuffer',
+\   <count>, <q-args>)
 
 command! -bang -bar -count -nargs=?
-  \ TpbNext
-  \ call tabpagebuffer#command#do_bnext(1, 0, 'buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbNext
+\ call tabpagebuffer#command#do_bnext(1, 0, 'buffer<bang>',
+\   <count>, <q-args>)
 command! -bang -bar -count -nargs=?
-  \ TpbPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 0, 'buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbPrevious
+\ call tabpagebuffer#command#do_bnext(0, 0, 'buffer<bang>',
+\   <count>, <q-args>)
 command! -bang -bar -count -nargs=?
-  \ TpbModified
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbModified
+\ call tabpagebuffer#command#do_bnext(1, 1, 'buffer<bang>',
+\   <count>, <q-args>)
 command! -bang -bar -count -nargs=?
-  \ TpbModifiedNext
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbModifiedNext
+\ call tabpagebuffer#command#do_bnext(1, 1, 'buffer<bang>',
+\   <count>, <q-args>)
 command! -bang -bar -count -nargs=?
-  \ TpbModifiedPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 1, 'buffer<bang>',
-  \   <count>, <q-args>)
+\ TpbModifiedPrevious
+\ call tabpagebuffer#command#do_bnext(0, 1, 'buffer<bang>',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ STpbNext
-  \ call tabpagebuffer#command#do_bnext(1, 0, 'sbuffer',
-  \   <count>, <q-args>)
+\ STpbNext
+\ call tabpagebuffer#command#do_bnext(1, 0, 'sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ STpbPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 0, 'sbuffer',
-  \   <count>, <q-args>)
+\ STpbPrevious
+\ call tabpagebuffer#command#do_bnext(0, 0, 'sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ STpbModified
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'sbuffer',
-  \   <count>, <q-args>)
+\ STpbModified
+\ call tabpagebuffer#command#do_bnext(1, 1, 'sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ STpbModifiedNext
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'sbuffer',
-  \   <count>, <q-args>)
+\ STpbModifiedNext
+\ call tabpagebuffer#command#do_bnext(1, 1, 'sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ STpbModifiedPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 1, 'sbuffer',
-  \   <count>, <q-args>)
+\ STpbModifiedPrevious
+\ call tabpagebuffer#command#do_bnext(0, 1, 'sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ VTpbNext
-  \ call tabpagebuffer#command#do_bnext(1, 0, 'vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbNext
+\ call tabpagebuffer#command#do_bnext(1, 0, 'vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ VTpbPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 0, 'vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbPrevious
+\ call tabpagebuffer#command#do_bnext(0, 0, 'vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ VTpbModified
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbModified
+\ call tabpagebuffer#command#do_bnext(1, 1, 'vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ VTpbModifiedNext
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbModifiedNext
+\ call tabpagebuffer#command#do_bnext(1, 1, 'vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ VTpbModifiedPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 1, 'vertical sbuffer',
-  \   <count>, <q-args>)
+\ VTpbModifiedPrevious
+\ call tabpagebuffer#command#do_bnext(0, 1, 'vertical sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ TTpbNext
-  \ call tabpagebuffer#command#do_bnext(1, 0, 'tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbNext
+\ call tabpagebuffer#command#do_bnext(1, 0, 'tab sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ TTpbPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 0, 'tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbPrevious
+\ call tabpagebuffer#command#do_bnext(0, 0, 'tab sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ TTpbModified
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbModified
+\ call tabpagebuffer#command#do_bnext(1, 1, 'tab sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ TTpbModifiedNext
-  \ call tabpagebuffer#command#do_bnext(1, 1, 'tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbModifiedNext
+\ call tabpagebuffer#command#do_bnext(1, 1, 'tab sbuffer',
+\   <count>, <q-args>)
 command! -bar -count -nargs=?
-  \ TTpbModifiedPrevious
-  \ call tabpagebuffer#command#do_bnext(0, 1, 'tab sbuffer',
-  \   <count>, <q-args>)
+\ TTpbModifiedPrevious
+\ call tabpagebuffer#command#do_bnext(0, 1, 'tab sbuffer',
+\   <count>, <q-args>)
 
 command! -bang -bar -nargs=?
-  \ TpbRewind
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'buffer<bang>',
-  \   <q-args>)
+\ TpbRewind
+\ call tabpagebuffer#command#do_brewind(0, 0, 'buffer<bang>',
+\   <q-args>)
 command! -bang -bar -nargs=?
-  \ TpbFirst
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'buffer<bang>',
-  \   <q-args>)
+\ TpbFirst
+\ call tabpagebuffer#command#do_brewind(0, 0, 'buffer<bang>',
+\   <q-args>)
 command! -bang -bar -nargs=?
-  \ TpbLast
-  \ call tabpagebuffer#command#do_brewind(1, 0, 'buffer<bang>',
-  \   <q-args>)
+\ TpbLast
+\ call tabpagebuffer#command#do_brewind(1, 0, 'buffer<bang>',
+\   <q-args>)
 command! -bang -bar -nargs=?
-  \ TpbModifiedRewind
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'buffer<bang>',
-  \   <q-args>)
+\ TpbModifiedRewind
+\ call tabpagebuffer#command#do_brewind(0, 1, 'buffer<bang>',
+\   <q-args>)
 command! -bang -bar -nargs=?
-  \ TpbModifiedFirst
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'buffer<bang>',
-  \   <q-args>)
+\ TpbModifiedFirst
+\ call tabpagebuffer#command#do_brewind(0, 1, 'buffer<bang>',
+\   <q-args>)
 command! -bang -bar -nargs=?
-  \ TpbModifiedLast
-  \ call tabpagebuffer#command#do_brewind(1, 1, 'buffer<bang>',
-  \   <q-args>)
+\ TpbModifiedLast
+\ call tabpagebuffer#command#do_brewind(1, 1, 'buffer<bang>',
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbRewind
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'sbuffer'
-  \   <q-args>)
+\ STpbRewind
+\ call tabpagebuffer#command#do_brewind(0, 0, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbFirst
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'sbuffer'
-  \   <q-args>)
+\ STpbFirst
+\ call tabpagebuffer#command#do_brewind(0, 0, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbLast
-  \ call tabpagebuffer#command#do_brewind(1, 0, 'sbuffer'
-  \   <q-args>)
+\ STpbLast
+\ call tabpagebuffer#command#do_brewind(1, 0, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbModifiedRewind
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'sbuffer'
-  \   <q-args>)
+\ STpbModifiedRewind
+\ call tabpagebuffer#command#do_brewind(0, 1, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbModifiedFirst
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'sbuffer'
-  \   <q-args>)
+\ STpbModifiedFirst
+\ call tabpagebuffer#command#do_brewind(0, 1, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ STpbModifiedLast
-  \ call tabpagebuffer#command#do_brewind(1, 1, 'sbuffer'
-  \   <q-args>)
+\ STpbModifiedLast
+\ call tabpagebuffer#command#do_brewind(1, 1, 'sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbRewind
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbRewind
+\ call tabpagebuffer#command#do_brewind(0, 0, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbFirst
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbFirst
+\ call tabpagebuffer#command#do_brewind(0, 0, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbLast
-  \ call tabpagebuffer#command#do_brewind(1, 0, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbLast
+\ call tabpagebuffer#command#do_brewind(1, 0, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbModifiedRewind
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbModifiedRewind
+\ call tabpagebuffer#command#do_brewind(0, 1, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbModifiedFirst
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbModifiedFirst
+\ call tabpagebuffer#command#do_brewind(0, 1, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ VTpbModifiedLast
-  \ call tabpagebuffer#command#do_brewind(1, 1, 'vertical sbuffer'
-  \   <q-args>)
+\ VTpbModifiedLast
+\ call tabpagebuffer#command#do_brewind(1, 1, 'vertical sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbRewind
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbRewind
+\ call tabpagebuffer#command#do_brewind(0, 0, 'tab sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbFirst
-  \ call tabpagebuffer#command#do_brewind(0, 0, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbFirst
+\ call tabpagebuffer#command#do_brewind(0, 0, 'tab sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbLast
-  \ call tabpagebuffer#command#do_brewind(1, 0, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbLast
+\ call tabpagebuffer#command#do_brewind(1, 0, 'tab sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbModifiedRewind
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbModifiedRewind
+\ call tabpagebuffer#command#do_brewind(0, 1, 'tab sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbModifiedFirst
-  \ call tabpagebuffer#command#do_brewind(0, 1, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbModifiedFirst
+\ call tabpagebuffer#command#do_brewind(0, 1, 'tab sbuffer'
+\   <q-args>)
 command! -bar -nargs=?
-  \ TTpbModifiedLast
-  \ call tabpagebuffer#command#do_brewind(1, 1, 'tab sbuffer'
-  \   <q-args>)
+\ TTpbModifiedLast
+\ call tabpagebuffer#command#do_brewind(1, 1, 'tab sbuffer'
+\   <q-args>)
 
 command! -bar -count
-  \ TpbUnhide
-  \ call tabpagebuffer#command#do_unhide(1, 'sbuffer',
-  \   <count>)
+\ TpbUnhide
+\ call tabpagebuffer#command#do_unhide(1, 'sbuffer',
+\   <count>)
 command! -bar -count
-  \ STpbUnhide
-  \ call tabpagebuffer#command#do_unhide(1, 'sbuffer',
-  \   <count>)
+\ STpbUnhide
+\ call tabpagebuffer#command#do_unhide(1, 'sbuffer',
+\   <count>)
 command! -bar -count
-  \ VTpbUnhide
-  \ call tabpagebuffer#command#do_unhide(1, 'vertical sbuffer',
-  \   <count>)
+\ VTpbUnhide
+\ call tabpagebuffer#command#do_unhide(1, 'vertical sbuffer',
+\   <count>)
 command! -bar -count
-  \ TTpbUnhide
-  \ call tabpagebuffer#command#do_unhide(1, 'tab sbuffer',
-  \   <count>)
+\ TTpbUnhide
+\ call tabpagebuffer#command#do_unhide(1, 'tab sbuffer',
+\   <count>)
 
 command! -bar -count
-  \ TpbAll
-  \ call tabpagebuffer#command#do_unhide(0, 'sbuffer',
-  \   <count>)
+\ TpbAll
+\ call tabpagebuffer#command#do_unhide(0, 'sbuffer',
+\   <count>)
 command! -bar -count
-  \ STpbAll
-  \ call tabpagebuffer#command#do_unhide(0, 'sbuffer',
-  \   <count>)
+\ STpbAll
+\ call tabpagebuffer#command#do_unhide(0, 'sbuffer',
+\   <count>)
 command! -bar -count
-  \ VTpbAll
-  \ call tabpagebuffer#command#do_unhide(0, 'vertical sbuffer',
-  \   <count>)
+\ VTpbAll
+\ call tabpagebuffer#command#do_unhide(0, 'vertical sbuffer',
+\   <count>)
 command! -bar -count
-  \ TTpbAll
-  \ call tabpagebuffer#command#do_unhide(0, 'tab sbuffer',
-  \   <count>)
+\ TTpbAll
+\ call tabpagebuffer#command#do_unhide(0, 'tab sbuffer',
+\   <count>)
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

@@ -29,7 +29,7 @@ let s:save_cpo = &cpo
 set cpo&vim
 
 let g:tabpagebuffer#command#bdelete_keeptabpage =
-  \ get(g:, 'tabpagebuffer#command#bdelete_keeptabpage', 0)
+\ get(g:, 'tabpagebuffer#command#bdelete_keeptabpage', 0)
 
 function! s:echoerr(...)
   echohl ErrorMsg
@@ -41,14 +41,14 @@ function! s:_numerical_sort(i1, i2)
   return a:i1 - a:i2
 endfunction
 let s:numerical_sort =
-  \ has('patch-7.4.341') || v:version > 704 ||
-  \ (v:version == 704 && has('patch341')) ?
-  \   'n' : 's:_numerical_sort'
+\ has('patch-7.4.341') || v:version > 704 ||
+\ (v:version == 704 && has('patch341')) ?
+\   'n' : 's:_numerical_sort'
 
 let s:_doautocmd =
-  \ has('patch-7.3.438') || v:version > 703 ||
-  \ (v:version == 703 && has('patch438')) ?
-  \   '<nomodeline>' : ''
+\ has('patch-7.3.438') || v:version > 703 ||
+\ (v:version == 703 && has('patch438')) ?
+\   '<nomodeline>' : ''
 function! s:doautocmd(...)
   execute 'doautocmd' s:_doautocmd join(a:000)
 endfunction
@@ -59,7 +59,7 @@ function! tabpagebuffer#command#ls(command)
   silent execute a:command
   redir END
   for buf in filter(split(out, '\n'),
-    \ 'tabpagebuffer#function#bufexists(str2nr(matchstr(v:val, "\\d\\+")))')
+  \ 'tabpagebuffer#function#bufexists(str2nr(matchstr(v:val, "\\d\\+")))')
     echo buf
   endfor
 endfunction
@@ -78,28 +78,28 @@ endfunction
 function! tabpagebuffer#command#bdelete(command, ...)
   let tabnr = tabpagenr()
   let bufs = !len(get(a:000, 0, [])) ? [bufnr('%')] :
-    \ map(copy(a:1), 'tabpagebuffer#function#bufnr(v:val, 0, tabnr, 1)')
+  \ map(copy(a:1), 'tabpagebuffer#function#bufnr(v:val, 0, tabnr, 1)')
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:command =~# '\<bun'
       throw join(['tabpagebuffer-misc:E515',
-        \ 'No buffers were unloaded'])
+      \ 'No buffers were unloaded'])
     elseif a:command =~# '\<bw'
       throw join(['tabpagebuffer-misc:E517',
-        \ 'No buffers were wiped out'])
+      \ 'No buffers were wiped out'])
     else
       throw join(['tabpagebuffer-misc:E516',
-        \ 'No buffers were deleted'])
+      \ 'No buffers were deleted'])
     endif
   endif
 
   let cancel = ''
   if g:tabpagebuffer#command#bdelete_keeptabpage && tabpagenr('$') > 1
     let pop = get(filter(
-      \ add(sort(tabpagebuffer#function#buflist(), s:numerical_sort),
-      \   tabpagebuffer#function#bufnr('#')),
-      \ 'buflisted(v:val) && index(bufs, v:val) < 0 && ' .
-      \ 'getbufvar(v:val, "&filetype") != "qf"'), -1)
+    \ add(sort(tabpagebuffer#function#buflist(), s:numerical_sort),
+    \   tabpagebuffer#function#bufnr('#')),
+    \ 'buflisted(v:val) && index(bufs, v:val) < 0 && ' .
+    \ 'getbufvar(v:val, "&filetype") != "qf"'), -1)
     " echo 'pop:' pop
     if pop > 0
       execute 'sbuffer' pop
@@ -146,8 +146,8 @@ endfunction
 " tabpagebuffer#command#bdelete_all({command} [, {count}])
 function! tabpagebuffer#command#bdelete_all(command, ...)
   call tabpagebuffer#command#bdelete(a:command,
-    \ sort(tabpagebuffer#function#buflist(),
-    \   s:numerical_sort)[:(a:0 && a:1 ? a:1 : -1)])
+  \ sort(tabpagebuffer#function#buflist(),
+  \   s:numerical_sort)[:(a:0 && a:1 ? a:1 : -1)])
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
@@ -170,10 +170,10 @@ function! tabpagebuffer#command#do_buffer(command, count, args)
     let p = matchstr(a:args, '\m^+.*\\\@<! \+')
     let r = a:args[strlen(p):]
     call tabpagebuffer#command#buffer(
-      \ join([a:command, p]),
-      \ r =~ '^\d\+$' ? str2nr(r) :
-      \ !empty(r) ? r :
-      \ a:count ? a:count : '%')
+    \ join([a:command, p]),
+    \ r =~ '^\d\+$' ? str2nr(r) :
+    \ !empty(r) ? r :
+    \ a:count ? a:count : '%')
   catch /.*/
     call s:echoerr(v:exception)
   endtry
@@ -189,14 +189,14 @@ endfunction
 " E488: Trailing characters
 function! s:bnext(forward, modified, command, count)
   let bufs = sort(
-    \ filter(tabpagebuffer#function#buflist(),
-    \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
-    \ s:numerical_sort)
+  \ filter(tabpagebuffer#function#buflist(),
+  \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
+  \ s:numerical_sort)
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:modified
       throw join(['tabpagebuffer-misc:E84:',
-        \ 'No modified buffer found'])
+      \ 'No modified buffer found'])
     endif
     return
   endif
@@ -224,11 +224,11 @@ function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args
     let r = a:args[strlen(p):]
     if r =~ '\D'
       throw join(['tabpagebuffer-misc:E488',
-        \ 'Trailing characters'])
+      \ 'Trailing characters'])
     endif
     call s:bnext(a:forward, a:modified,
-      \ join([a:command, p]),
-      \ !empty(r) ? str2nr(r) : a:count ? a:count : 1)
+    \ join([a:command, p]),
+    \ !empty(r) ? str2nr(r) : a:count ? a:count : 1)
   catch /.*/
     call s:echoerr(v:exception)
   endtry
@@ -241,14 +241,14 @@ endfunction
 " E84: No modified buffer found
 function! s:brewind(forward, modified, command)
   let bufs = sort(
-    \ filter(tabpagebuffer#function#buflist(),
-    \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
-    \ s:numerical_sort)
+  \ filter(tabpagebuffer#function#buflist(),
+  \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
+  \ s:numerical_sort)
   " echo 'bufs:' bufs
   if !len(bufs)
     if a:modified
       throw join(['tabpagebuffer-misc:E84:',
-        \ 'No modified buffer found'])
+      \ 'No modified buffer found'])
     endif
     return
   endif
@@ -272,7 +272,7 @@ endfunction
 function! tabpagebuffer#command#do_brewind(forward, modified, command, args)
   try
     call s:brewind(a:forward, a:modified,
-      \ join([a:command, a:args]))
+    \ join([a:command, a:args]))
   catch /.*/
     call s:echoerr(v:exception)
   endtry
@@ -282,9 +282,9 @@ endfunction
 " tabpagebuffer#command#ball({command} [, {count}])
 function! s:unhide(loaded, command, count)
   let bufs = reverse(sort(
-    \ filter(tabpagebuffer#function#buflist(),
-    \   'buflisted(v:val) && (!a:loaded || bufloaded(v:val))'),
-    \ s:numerical_sort))
+  \ filter(tabpagebuffer#function#buflist(),
+  \   'buflisted(v:val) && (!a:loaded || bufloaded(v:val))'),
+  \ s:numerical_sort))
   " echo 'bufs:' bufs
   if !len(bufs)
     return
