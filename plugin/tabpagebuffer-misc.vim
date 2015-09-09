@@ -1,7 +1,7 @@
 " To control the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Sep-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -297,6 +297,19 @@ command! -bar -count
 \ TTpbAll
 \ call tabpagebuffer#command#do_unhide(0, 'tab sbuffer',
 \   <count>)
+
+function! TbpList(...)
+  call call('tabpagebuffer#function#buflist', a:000)
+endfunction
+function! TbpExists(...)
+  call call('tabpagebuffer#function#bufexists', a:000)
+endfunction
+function! TbpName(...)
+  call call('tabpagebuffer#function#bufname', a:000)
+endfunction
+function! TbpNr(...)
+  call call('tabpagebuffer#function#bufnr', a:000)
+endfunction
 
 let &cpo = s:save_cpo
 unlet s:save_cpo

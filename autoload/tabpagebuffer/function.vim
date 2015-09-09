@@ -1,7 +1,7 @@
 " Functions for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Sep-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -81,7 +81,7 @@ function! s:file_pat_to_reg_pat(expr)
   return join(reg_pat, '')
 endfunction
 let s:glob2regpat = function(exists('*glob2regpat') ?
-\ 'glob2regpat' : ("\<SNR>" . s:SID() . '_file_pat_to_reg_pat'))
+\ 'glob2regpat' : join(["\<SNR>", s:SID(), '_file_pat_to_reg_pat'], ''))
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)
@@ -109,51 +109,43 @@ function! tabpagebuffer#function#bufexists(expr, ...)
   \   'v:val == a:expr' : 'bufname(v:val) == a:expr'))
 endfunction
 
-" tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
-" E93: More than one match for %s
-" E94: No matching buffer for %s
+" tabpagebuffer#function#bufname({expr} [, {list} [, {tabnr}]])
 function! tabpagebuffer#function#bufname(expr, ...)
-  let tabnr = get(a:000, 0, tabpagenr())
-  let error = get(a:000, 1)
-  return bufname(tabpagebuffer#function#bufnr(a:expr, 0, tabnr, error))
+  let list  = get(a:000, 0)
+  let tabnr = get(a:000, 1, tabpagenr())
+  if list
+    return map(tabpagebuffer#function#bufnr(a:expr, 0, list, tabnr),
+    \ 'bufname(v:val)')
+  else
+    return bufname(tabpagebuffer#function#bufnr(a:expr, 0, list, tabnr))
+  endif
 endfunction
 
-" tabpagebuffer#function#bufnr({expr} [, {create} [, {tabnr} [, {error}]]])
-" E93: More than one match for %s
-" E94: No matching buffer for %s
+" tabpagebuffer#function#bufnr({expr} [, {create} [, {list} [, {tabnr}]]])
 function! tabpagebuffer#function#bufnr(expr, ...)
   let create = get(a:000, 0)
-  let tabnr  = get(a:000, 1, tabpagenr())
-  let error  = get(a:000, 2)
+  let list   = get(a:000, 1)
+  let tabnr  = get(a:000, 2, tabpagenr())
 
   let nr = bufnr(a:expr, create)
   if nr >= 0 || type(a:expr) == type(0) || a:expr == '%' || a:expr == '#'
     if create || index(tabpagebuffer#function#buflist(tabnr), nr) >= 0
-      return nr
-    elseif error
-      throw join(['tabpagebuffer-misc:E94:',
-      \ 'No matching buffer for', a:expr])
+      return list ? [nr] : nr
     else
-      return -1
+      return list ? [] : -1
     endif
   endif
 
-  let regpat = join(['\m', &fileignorecase ? '\c' : '\C',
+  let regpat = join([&fileignorecase ? '\c' : '\C',
   \ s:glob2regpat('*' . a:expr . '*')], '')
   let bufs = filter(tabpagebuffer#function#buflist(tabnr),
   \ 'bufname(v:val) =~ regpat')
-  if len(bufs) == 1
-    return bufs[0]
-  elseif error
-    if len(bufs)
-      throw join(['tabpagebuffer-misc:E93:',
-      \ 'More than one match for', a:expr])
-    else
-      throw join(['tabpagebuffer-misc:E94:',
-      \ 'No matching buffer for', a:expr])
-    endif
+  if empty(bufs)
+    return list ? [] : -1
+  elseif len(bufs) > 1
+    return list ? bufs : -1
   else
-    return -1
+    return list ? [bufs[0]] : bufs[0]
   endif
 endfunction
 

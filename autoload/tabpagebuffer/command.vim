@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  07-Sep-2015.
+" Last Change:  09-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -37,20 +37,40 @@ function! s:echoerr(...)
   echohl None
 endfunction
 
+function! s:has_patch(major, minor, patch)
+  let l:version = (a:major * 100 + a:minor)
+  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
+  \ (v:version > l:version) ||
+  \ (v:version == l:version && has('patch' . a:patch))
+endfunction
+
 function! s:_numerical_sort(i1, i2)
   return a:i1 - a:i2
 endfunction
-let s:numerical_sort =
-\ has('patch-7.4.341') || v:version > 704 ||
-\ (v:version == 704 && has('patch341')) ?
-\   'n' : 's:_numerical_sort'
+let s:numerical_sort = has_patch(7, 4, 341) ? 'n' : 's:_numerical_sort'
 
-let s:_doautocmd =
-\ has('patch-7.3.438') || v:version > 703 ||
-\ (v:version == 703 && has('patch438')) ?
-\   '<nomodeline>' : ''
+let s:_doautocmd = has_patch(7, 3, 438) > '<nomodeline>' : ''
 function! s:doautocmd(...)
   execute 'doautocmd' s:_doautocmd join(a:000)
+endfunction
+
+function! s:bufnr(expr, ...)
+  let create = get(a:000, 0)
+
+  if type(a:expr) == type(0)
+    return tabpagebuffer#function#bufnr(a:expr, create)
+  else
+    let bufs = tabpagebuffer#function#bufnr(a:expr, create, 1)
+    if empty(bufs)
+      throw join(['tabpagebuffer-misc:E94:',
+      \ 'No matching buffer for', a:expr])
+    elseif len(bufs) > 1
+      throw join(['tabpagebuffer-misc:E93:',
+      \ 'More than one match for', a:expr])
+    else
+      return bufs[0]
+    endif
+  endif
 endfunction
 
 " tabpagebuffer#command#ls({command})
@@ -72,15 +92,17 @@ function! tabpagebuffer#command#do_ls(command)
 endfunction
 
 " tabpagebuffer#command#bdelete({command} [, {list}])
+" E93: More than one match for %s
+" E94: No matching buffer for %s
 " E515: No buffers were unloaded
 " E516: No buffers were deleted
 " E517: No buffers were wiped out
 function! tabpagebuffer#command#bdelete(command, ...)
-  let tabnr = tabpagenr()
-  let bufs = !len(get(a:000, 0, [])) ? [bufnr('%')] :
-  \ map(copy(a:1), 'tabpagebuffer#function#bufnr(v:val, 0, tabnr, 1)')
+  let list = get(a:000, 0, ['%'])
+
+  let bufs = filter(map(list, 's:bufnr(v:val)'), 'v:val > 0')
   " echo 'bufs:' bufs
-  if !len(bufs)
+  if empty(bufs)
     if a:command =~# '\<bun'
       throw join(['tabpagebuffer-misc:E515',
       \ 'No buffers were unloaded'])
@@ -123,7 +145,7 @@ function! tabpagebuffer#command#do_bdelete(command, count, line1, line2, args)
   let args = []
   let i = 0
   while i < strlen(a:args)
-    let s = matchstr(a:args, '^\d\+\s\+', i)
+    let s = matchstr(a:args, '^\s*\<\d\+\>\s*', i)
     if !empty(s)
       call add(args, str2nr(s))
       let i += strlen(s)
@@ -132,7 +154,7 @@ function! tabpagebuffer#command#do_bdelete(command, count, line1, line2, args)
       break
     endif
   endwhile
-  if !len(args) && a:count
+  if empty(args) && a:count
     let args = range(a:line1, a:line2, a:line1 < a:line2 ? 1 : -1)
   endif
   " echo 'args:' args
@@ -145,9 +167,10 @@ endfunction
 
 " tabpagebuffer#command#bdelete_all({command} [, {count}])
 function! tabpagebuffer#command#bdelete_all(command, ...)
+  let count = get(a:000, 0, -1)
+
   call tabpagebuffer#command#bdelete(a:command,
-  \ sort(tabpagebuffer#function#buflist(),
-  \   s:numerical_sort)[:(a:0 && a:1 ? a:1 : -1)])
+  \ sort(tabpagebuffer#function#buflist(), s:numerical_sort)[:(count)])
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
@@ -158,16 +181,24 @@ function! tabpagebuffer#command#do_bdelete_all(command, count)
 endfunction
 
 " tabpagebuffer#command#buffer({command} [, {expr}])
-" E86: Cannot go to buffer %ld
+" E86: Buffer %ld does not exist
+" E93: More than one match for %s
+" E94: No matching buffer for %s
 function! tabpagebuffer#command#buffer(command, ...)
-  let tabnr = tabpagenr()
-  let pop = tabpagebuffer#function#bufnr(a:0 ? a:1 : '%', 0, tabnr, 1)
+  let expr = get(a:000, 0, '%')
+
+  let pop = s:bufnr(expr)
   " echo 'pop:' pop
+  if pop <= 0
+    throw join(['tabpagebuffer-misc:E86:',
+    \ 'Buffer', expr, 'does not exist'])
+  endif
+
   execute a:command pop
 endfunction
 function! tabpagebuffer#command#do_buffer(command, count, args)
   try
-    let p = matchstr(a:args, '\m^+.*\\\@<! \+')
+    let p = matchstr(a:args, '^+.*\\\@<! \+')
     let r = a:args[strlen(p):]
     call tabpagebuffer#command#buffer(
     \ join([a:command, p]),
@@ -179,10 +210,10 @@ function! tabpagebuffer#command#do_buffer(command, count, args)
   endtry
 endfunction
 
-" tabpagebuffer#command#next({command} [, {count}])
-" tabpagebuffer#command#previous({command} [, {count}])
-" tabpagebuffer#command#modified_next({command} [, {count}])
-" tabpagebuffer#command#modified_previous({command} [, {count}])
+" tabpagebuffer#command#bnext({command} [, {count}])
+" tabpagebuffer#command#bprevious({command} [, {count}])
+" tabpagebuffer#command#bmodified_next({command} [, {count}])
+" tabpagebuffer#command#bmodified_previous({command} [, {count}])
 " E84: No modified buffer found
 " E87: Cannot go beyond last buffer
 " E88: Cannot go before first buffer
@@ -193,7 +224,7 @@ function! s:bnext(forward, modified, command, count)
   \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
   \ s:numerical_sort)
   " echo 'bufs:' bufs
-  if !len(bufs)
+  if empty(bufs)
     if a:modified
       throw join(['tabpagebuffer-misc:E84:',
       \ 'No modified buffer found'])
@@ -207,20 +238,20 @@ function! s:bnext(forward, modified, command, count)
   execute a:command pop
 endfunction
 function! tabpagebuffer#command#bnext(command, ...)
-  call s:bnext(1, 0, a:command, a:0 ? a:1 : 1)
+  call s:bnext(1, 0, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#bprevious(command, ...)
-  call s:bnext(0, 0, a:command, a:0 ? a:1 : 1)
+  call s:bnext(0, 0, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#bmodified_next(command, ...)
-  call s:bnext(1, 1, a:command, a:0 ? a:1 : 1)
+  call s:bnext(1, 1, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#bmodified_previous(command, ...)
-  call s:bnext(0, 1, a:command, a:0 ? a:1 : 1)
+  call s:bnext(0, 1, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args)
   try
-    let p = matchstr(a:args, '\m^+.*\\\@<! \+')
+    let p = matchstr(a:args, '^+.*\\\@<! \+')
     let r = a:args[strlen(p):]
     if r =~ '\D'
       throw join(['tabpagebuffer-misc:E488',
@@ -234,10 +265,10 @@ function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args
   endtry
 endfunction
 
-" tabpagebuffer#command#first({command})
-" tabpagebuffer#command#last({command})
-" tabpagebuffer#command#modified_first({command})
-" tabpagebuffer#command#modified_last({command})
+" tabpagebuffer#command#bfirst({command})
+" tabpagebuffer#command#blast({command})
+" tabpagebuffer#command#bmodified_first({command})
+" tabpagebuffer#command#bmodified_last({command})
 " E84: No modified buffer found
 function! s:brewind(forward, modified, command)
   let bufs = sort(
@@ -245,7 +276,7 @@ function! s:brewind(forward, modified, command)
   \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
   \ s:numerical_sort)
   " echo 'bufs:' bufs
-  if !len(bufs)
+  if empty(bufs)
     if a:modified
       throw join(['tabpagebuffer-misc:E84:',
       \ 'No modified buffer found'])
@@ -257,16 +288,16 @@ function! s:brewind(forward, modified, command)
   " echo 'pop:' pop
   execute a:command pop
 endfunction
-function! tabpagebuffer#command#first(command)
+function! tabpagebuffer#command#bfirst(command)
   call s:brewind(0, 0, a:command)
 endfunction
-function! tabpagebuffer#command#last(command)
+function! tabpagebuffer#command#blast(command)
   call s:brewind(1, 0, a:command)
 endfunction
-function! tabpagebuffer#command#modified_first(command)
+function! tabpagebuffer#command#bmodified_first(command)
   call s:brewind(0, 1, a:command)
 endfunction
-function! tabpagebuffer#command#modified_last(command)
+function! tabpagebuffer#command#bmodified_last(command)
   call s:brewind(1, 1, a:command)
 endfunction
 function! tabpagebuffer#command#do_brewind(forward, modified, command, args)
@@ -286,7 +317,7 @@ function! s:unhide(loaded, command, count)
   \   'buflisted(v:val) && (!a:loaded || bufloaded(v:val))'),
   \ s:numerical_sort))
   " echo 'bufs:' bufs
-  if !len(bufs)
+  if empty(bufs)
     return
   endif
 
@@ -311,10 +342,10 @@ function! s:unhide(loaded, command, count)
   endif
 endfunction
 function! tabpagebuffer#command#unhide(command, ...)
-  call s:unhide(1, a:command, a:0 ? a:1 : 1)
+  call s:unhide(1, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#ball(command, ...)
-  call s:unhide(0, a:command, a:0 ? a:1 : 1)
+  call s:unhide(0, a:command, get(a:000, 0, 1))
 endfunction
 function! tabpagebuffer#command#do_unhide(loaded, command, count)
   try

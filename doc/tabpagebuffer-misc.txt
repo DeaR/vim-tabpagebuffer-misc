@@ -347,38 +347,41 @@ COMMANDS					*tabpagebuffer-misc-commands*
 ------------------------------------------------------------------------------
 FUNCTIONS					*tabpagebuffer-misc-functions*
 
-					*tabpagebuffer#function#buflist()*
+				*tabpagebuffer#function#buflist()* *TbpList()*
 tabpagebuffer#function#buflist([{tabnr}])
+TbpList([{tannr}])
 	The result is a |List|, where each item is the number of the buffer
 	belonging to the {tabnr}th tab page.  It contains |hidden-buffer| and
 	|unlisted-buffer|.
 	Also see |tabpagebuflist()|.
 
-					*tabpagebuffer#function#bufexists()*
+			*tabpagebuffer#function#bufexists()* *TbpExists()*
 tabpagebuffer#function#bufexists({expr} [, {tabnr}])
+TbpExists({expr} [, {tabnr}])
 	The result is a |Number|, which is non-zero if a buffer belonging to
 	the {tabnr}th tab page called {expr} exists.
 	If {expr} is |Number|, that buffer number's name is given.
 	If {expr} is |String|, it must match a buffer name exactly.
 	Also see |bufexists()|.
 
-					*tabpagebuffer#function#bufname()*
-tabpagebuffer#function#bufname({expr} [, {tabnr} [, {error}]])
+				*tabpagebuffer#function#bufname()* *TbpName()*
+tabpagebuffer#function#bufname({expr} [, {list} [, {tabnr}]])
+TbpName({expr} [, {list} [, {tabnr}]])
 	The result is the name of a buffer belonging to the {tabnr}th tab
-	page.  When {error} is given and it is non-zero, if the buffer doesn't
-	exists, error occurred.
+	page.  When {list} is given and it is non-zero, a |List| will be
+	returned.
 	If {expr} is a |Number|, that buffer number's name is given.
 	If {expr} is a |String|, it is used as a |file-pattern| to match with
 	the buffer names.
 	Also see |bufname()|.
 
-					*tabpagebuffer#function#bufnr()*
-tabpagebuffer#function#bufnr({expr} [, {create} [, {tabnr} [, {error}]]])
+				*tabpagebuffer#function#bufnr()* *TbpNr()*
+tabpagebuffer#function#bufnr({expr} [, {create} [, {list} [, {tabnr}]]])
+TbpNr({expr} [, {create} [, {list} [, {tabnr}]]])
 	The result is the number of a buffer belonging to the {tabnr}th tab
-	page.  When {create} is given and it is non-zero, a new, not
-	belong to the tab page, unlisted, buffer is created and its number is
-	returned.  When {error} is given and it is non-zero, if the buffer
-	doesn't exists, error occurred.
+	page.  When {create} is given and it is non-zero, a new, not belong to
+	the tab page, unlisted, buffer is created and its number is returned.
+	When {list} is given and it is non-zero, a |List| will be returned.
 	If {expr} is a |Number|, that buffer number's name is given.
 	If {expr} is a |String|, it is used as a |file-pattern| to match with
 	the buffer names.
@@ -424,24 +427,24 @@ tabpagebuffer#command#buffer({command} [, {expr}])
 		\ 'vertical sbuffer +setf\ vim', 3)
 <	Also see |:TpbBuffer|.
 
-					*tabpagebuffer#command#next()*
-tabpagebuffer#command#next({command} [, {count}])
+					*tabpagebuffer#command#bnext()*
+tabpagebuffer#command#bnext({command} [, {count}])
 	Go to {count}th next buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#next(
 		\ 'vertical sbuffer +setf\ vim', 3)
 <	Also see |:TpbNext|.
 
-					*tabpagebuffer#command#previous()*
-tabpagebuffer#command#previous({command} [, {count}])
+					*tabpagebuffer#command#bprevious()*
+tabpagebuffer#command#bprevious({command} [, {count}])
 	Go to {count}th previous buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#previsous(
 		\ 'vertical sbuffer +setf\ vim', 3)
 <	Also see |:TpbPrevious|.
 
-				*tabpagebuffer#command#modified_next()*
-tabpagebuffer#command#modified_next({command} [, {count}])
+				*tabpagebuffer#command#bmodified_next()*
+tabpagebuffer#command#bmodified_next({command} [, {count}])
 	Go to {count}th next modified buffer belonging to the current tab
 	page.
 	{command} is used to open buffer, e.g.: >
@@ -449,8 +452,8 @@ tabpagebuffer#command#modified_next({command} [, {count}])
 		\ 'vertical sbuffer +setf\ vim', 3)
 <	Also see |:TpbModifiedNext|.
 
-				*tabpagebuffer#command#modified_previous()*
-tabpagebuffer#command#modified_previous({command} [, {count}])
+				*tabpagebuffer#command#bmodified_previous()*
+tabpagebuffer#command#bmodified_previous({command} [, {count}])
 	Go to {count}th previous modified buffer belonging to the current tab
 	page.
 	{command} is used to open buffer, e.g.: >
@@ -458,32 +461,32 @@ tabpagebuffer#command#modified_previous({command} [, {count}])
 		\ 'vertical sbuffer +setf\ vim', 3)
 <	Also see |:TpbModifiedPrevious|.
 
-					*tabpagebuffer#command#first()*
-tabpagebuffer#command#first({command})
+					*tabpagebuffer#command#bfirst()*
+tabpagebuffer#command#bfirst({command})
 	Go to first buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#first(
 		\ 'vertical sbuffer +setf\ vim')
 <	Also see |:TpbFirst|.
 
-					*tabpagebuffer#command#last()*
-tabpagebuffer#command#last({command})
+					*tabpagebuffer#command#blast()*
+tabpagebuffer#command#blast({command})
 	Go to last buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#last(
 		\ 'vertical sbuffer +setf\ vim')
 <	Also see |:TpbLast|.
 
-				*tabpagebuffer#command#modified_first()*
-tabpagebuffer#command#modified_first({command})
+				*tabpagebuffer#command#bmodified_first()*
+tabpagebuffer#command#bmodified_first({command})
 	Go to first modified buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#modified_first(
 		\ 'vertical sbuffer +setf\ vim')
 <	Also see |:TpbModifiedFirst|.
 
-				*tabpagebuffer#command#modified_last()*
-tabpagebuffer#command#modified_last({command})
+				*tabpagebuffer#command#bmodified_last()*
+tabpagebuffer#command#bmodified_last({command})
 	Go to last modified buffer belonging to the current tab page.
 	{command} is used to open buffer, e.g.: >
 		:call tabpagebuffer#command#modified_last(
@@ -515,6 +518,7 @@ tabpagebuffer#command#ball({command} [, {count}])
 ERROR CODE					*tabpagebuffer-misc-errorcode*
 
 |E84|:	No modified buffer found
+|E86|:	Buffer `ld` does not exist
 |E87|:	Cannot go beyond last buffer
 |E88|:	Cannot go before first buffer
 |E93|:	More than one match for `expr`
