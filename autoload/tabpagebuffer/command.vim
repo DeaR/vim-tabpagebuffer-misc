@@ -178,7 +178,7 @@ function! tabpagebuffer#command#bdelete_all(command, ...)
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
-    call tabpagebuffer#command#bdelete_all(a:command, a:count)
+    call tabpagebuffer#command#bdelete_all(a:command, a:count ? a:count : -1)
   catch /.*/
     call s:echoerr(v:exception)
   endtry
