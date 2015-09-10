@@ -154,8 +154,12 @@ function! tabpagebuffer#command#do_bdelete(command, count, line1, line2, args)
       break
     endif
   endwhile
-  if empty(args) && a:count
-    let args = range(a:line1, a:line2, a:line1 < a:line2 ? 1 : -1)
+  if empty(args)
+    if a:count
+      let args = range(a:line1, a:line2, a:line1 < a:line2 ? 1 : -1)
+    else
+      let args = ['%']
+    endif
   endif
   " echo 'args:' args
   try
