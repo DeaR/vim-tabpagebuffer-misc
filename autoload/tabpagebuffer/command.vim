@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2015.
+" Last Change:  10-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -47,9 +47,9 @@ endfunction
 function! s:_numerical_sort(i1, i2)
   return a:i1 - a:i2
 endfunction
-let s:numerical_sort = has_patch(7, 4, 341) ? 'n' : 's:_numerical_sort'
+let s:numerical_sort = s:has_patch(7, 4, 341) ? 'n' : 's:_numerical_sort'
 
-let s:_doautocmd = has_patch(7, 3, 438) > '<nomodeline>' : ''
+let s:_doautocmd = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
 function! s:doautocmd(...)
   execute 'doautocmd' s:_doautocmd join(a:000)
 endfunction
