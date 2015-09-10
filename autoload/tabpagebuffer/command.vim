@@ -167,10 +167,10 @@ endfunction
 
 " tabpagebuffer#command#bdelete_all({command} [, {count}])
 function! tabpagebuffer#command#bdelete_all(command, ...)
-  let count = get(a:000, 0, -1)
+  let l:count = get(a:000, 0, -1)
 
   call tabpagebuffer#command#bdelete(a:command,
-  \ sort(tabpagebuffer#function#buflist(), s:numerical_sort)[:(count)])
+  \ sort(tabpagebuffer#function#buflist(), s:numerical_sort)[:(l:count)])
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
