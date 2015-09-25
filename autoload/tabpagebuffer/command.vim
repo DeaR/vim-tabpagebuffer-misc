@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  10-Sep-2015.
+" Last Change:  24-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -121,7 +121,7 @@ function! tabpagebuffer#command#bdelete(command, ...)
     \ add(sort(tabpagebuffer#function#buflist(), s:numerical_sort),
     \   tabpagebuffer#function#bufnr('#')),
     \ 'buflisted(v:val) && index(bufs, v:val) < 0 && ' .
-    \ 'getbufvar(v:val, "&filetype") != "qf"'), -1)
+    \ 'getbufvar(v:val, "&buftype") != "quickfix"'), -1)
     " echo 'pop:' pop
     if pop > 0
       execute 'sbuffer' pop
