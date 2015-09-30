@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  24-Sep-2015.
+" Last Change:  29-Sep-2015.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -86,7 +86,7 @@ endfunction
 function! tabpagebuffer#command#do_ls(command)
   try
     call tabpagebuffer#command#ls(a:command)
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -164,7 +164,7 @@ function! tabpagebuffer#command#do_bdelete(command, count, line1, line2, args)
   " echo 'args:' args
   try
     call tabpagebuffer#command#bdelete(a:command, args)
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -179,7 +179,7 @@ endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
     call tabpagebuffer#command#bdelete_all(a:command, a:count ? a:count : -1)
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -209,7 +209,7 @@ function! tabpagebuffer#command#do_buffer(command, count, args)
     \ r =~ '^\d\+$' ? str2nr(r) :
     \ !empty(r) ? r :
     \ a:count ? a:count : '%')
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -264,7 +264,7 @@ function! tabpagebuffer#command#do_bnext(forward, modified, command, count, args
     call s:bnext(a:forward, a:modified,
     \ join([a:command, p]),
     \ !empty(r) ? str2nr(r) : a:count ? a:count : 1)
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -308,7 +308,7 @@ function! tabpagebuffer#command#do_brewind(forward, modified, command, args)
   try
     call s:brewind(a:forward, a:modified,
     \ join([a:command, a:args]))
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
@@ -354,7 +354,7 @@ endfunction
 function! tabpagebuffer#command#do_unhide(loaded, command, count)
   try
     call s:unhide(a:loaded, a:command, a:count)
-  catch /.*/
+  catch
     call s:echoerr(v:exception)
   endtry
 endfunction
