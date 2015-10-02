@@ -45,9 +45,11 @@ REQUIREMENTS				*tabpagebuffer-misc-requirements*
 
 - Vim 7.3 or later
 - |tabpagebuffer| or |ctrlspace|
+- Optional: |CtrlP|
 
 |tabpagebuffer|	(https://github.com/Shougo/tabpagebuffer.vim)
 |ctrlspace|	(http://www.vim.org/scripts/script.php?script_id=4789)
+|CtrlP|		(http://kien.github.com/ctrlp.vim)
 
 
 ==============================================================================
@@ -343,6 +345,9 @@ COMMANDS					*tabpagebuffer-misc-commands*
 	Rearrange the screen to open one tab for each buffer belonging to the
 	current tab page.  When a count is given, this is the maximum number
 	of windows to open.
+
+:CtrlPTabpageBuffer [N]					*:CtrlPTabpageBuffer*
+	Open CtrlP in find buffer belonging to the [N]th tab page.
 
 ------------------------------------------------------------------------------
 FUNCTIONS					*tabpagebuffer-misc-functions*
