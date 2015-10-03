@@ -50,7 +50,7 @@ function! ctrlp#tabpagebuffer#init()
     let bname = bufname(id)
     let ebname = bname == ''
     let fname = fnamemodify(ebname ? ('[' . id . '*No Name]') : bname, ':.')
-    cal add(bufs[ebname], fname)
+    call add(bufs[ebname], fname)
   endfor
   return bufs[0] + bufs[1]
 endfunction
