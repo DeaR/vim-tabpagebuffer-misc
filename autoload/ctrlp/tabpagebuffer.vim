@@ -30,9 +30,6 @@ if exists('g:loaded_ctrlp_tabpagebuffer') && g:loaded_ctrlp_tabpagebuffer
 endif
 let g:loaded_ctrlp_tabpagebuffer = 1
 
-let g:ctrlp#tabpagebuffer#visible_all_buftype =
-\ get(g:, 'ctrlp#tabpagebuffer#visible_all_buftype', 0)
-
 call add(g:ctrlp_ext_vars, {
 \ 'init'   : 'ctrlp#tabpagebuffer#init()',
 \ 'accept' : 'ctrlp#acceptfile',
@@ -46,17 +43,12 @@ let s:id = g:ctrlp_builtins + len(g:ctrlp_ext_vars)
 function! ctrlp#tabpagebuffer#init()
   let tabnr = exists('s:tabnr') ? s:tabnr : tabpagenr()
   let bufs = [[], []]
-  for bufnr in filter(tabpagebuffer#function#buflist(tabnr), 'buflisted(v:val)' .
-  \ (g:ctrlp#tabpagebuffer#visible_all_buftype ? '' :
-  \  ' && empty(getbufvar(v:val, "&buftype"))'))
+  for bufnr in filter(tabpagebuffer#function#buflist(tabnr),
+  \ 'empty(getbufvar(v:val, "&buftype")) && buflisted(v:val)')
     let name = bufname(bufnr)
     let noname = name == ''
     let fname = fnamemodify(
     \ noname ? ('[' . bufnr . '*No Name]') : name, ':.')
-    let type = getbufvar(bufnr, '&buftype')
-    if !empty(type)
-      let fname .= ' [' . type . ']'
-    endif
     call add(bufs[noname], fname)
   endfor
   return bufs[0] + bufs[1]

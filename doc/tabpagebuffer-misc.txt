@@ -66,12 +66,6 @@ g:tabpagebuffer#command#bdelete_keeptabpage
 
 	The default value is 0.
 
-				*g:ctrlp#tabpagebuffer#visible_all_buftype*
-g:ctrlp#tabpagebuffer#visible_all_buftype
-	If this variable is 1, |:CtrlPTabpageBuffer| visible all 'buftype'.
-
-	The default value is 0.
-
 
 ------------------------------------------------------------------------------
 COMMANDS					*tabpagebuffer-misc-commands*
