@@ -1,6 +1,6 @@
 *tabpagebuffer-misc.txt*			*tabpagebuffer-misc*
 
-Version: 1.1.0
+Version: 1.2.0
 Author : DeaR <nayuri@kuonn.mydns.jp>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining a
@@ -49,6 +49,7 @@ REQUIREMENTS				*tabpagebuffer-misc-requirements*
 
 |tabpagebuffer|	(https://github.com/Shougo/tabpagebuffer.vim)
 |ctrlspace|	(http://www.vim.org/scripts/script.php?script_id=4789)
+
 |CtrlP|		(http://kien.github.com/ctrlp.vim)
 
 
@@ -65,6 +66,12 @@ g:tabpagebuffer#command#bdelete_keeptabpage
 
 	The default value is 0.
 
+				*g:ctrlp#tabpagebuffer#visible_all_buftype*
+g:ctrlp#tabpagebuffer#visible_all_buftype
+	If this variable is 1, |:CtrlPTabpageBuffer| visible all 'buftype'.
+
+	The default value is 0.
+
 
 ------------------------------------------------------------------------------
 COMMANDS					*tabpagebuffer-misc-commands*
@@ -73,7 +80,7 @@ COMMANDS					*tabpagebuffer-misc-commands*
 :TpbBuffers[!]
 :TpbLs[!]
 	Show all buffers belonging to the current tab page.
-	Also see |:files||, |:buffers|, |:ls|.
+	Also see |:files|, |:buffers|, |:ls|.
 
 
 :[N]TpbDelete[!] [N]						*:TpbDelete*
@@ -349,6 +356,7 @@ COMMANDS					*tabpagebuffer-misc-commands*
 :CtrlPTabpageBuffer [N]					*:CtrlPTabpageBuffer*
 	Open CtrlP in find buffer belonging to the [N]th tab page.
 
+
 ------------------------------------------------------------------------------
 FUNCTIONS					*tabpagebuffer-misc-functions*
 
@@ -544,6 +552,7 @@ ETPB101:	tabpagebuffer or ctrlspace plugin is not installed
 ==============================================================================
 CHANGELOG					*tabpagebuffer-misc-changelog*
 
+1.2.0	Add |:CtrlPTabpageBuffer|.
 1.1.0	Re-create.
 1.0.0	First version.
 
