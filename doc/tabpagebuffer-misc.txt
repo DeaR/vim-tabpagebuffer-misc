@@ -2,7 +2,9 @@
 
 Version: 1.2.0
 Author : DeaR <nayuri@kuonn.mydns.jp>
-License: MIT license  {{{
+License: MIT License  {{{
+    Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
+
     Permission is hereby granted, free of charge, to any person obtaining a
     copy of this software and associated documentation files (the "Software"),
     to deal in the Software without restriction, including without limitation
@@ -22,16 +24,16 @@ License: MIT license  {{{
 }}}
 
 ==============================================================================
-CONTENTS					*tabpagebuffer-misc-contents*
+CONTENTS				*tabpagebuffer-misc-contents*
 
 INTRODUCTION				|tabpagebuffer-misc-introduction|
 REQUIREMENTS				|tabpagebuffer-misc-requirements|
-INTERFACE					|tabpagebuffer-misc-interface|
-  VARIABLES					|tabpagebuffer-misc-variables|
-  COMMANDS					|tabpagebuffer-misc-commands|
-  FUNCTIONS					|tabpagebuffer-misc-functions|
-ERROR CODE					|tabpagebuffer-misc-errorcode|
-CHANGELOG					|tabpagebuffer-misc-changelog|
+INTERFACE				|tabpagebuffer-misc-interface|
+  VARIABLES				|tabpagebuffer-misc-variables|
+  COMMANDS				|tabpagebuffer-misc-commands|
+  FUNCTIONS				|tabpagebuffer-misc-functions|
+ERROR CODE				|tabpagebuffer-misc-errorcode|
+CHANGELOG				|tabpagebuffer-misc-changelog|
 
 
 ==============================================================================
@@ -54,9 +56,9 @@ REQUIREMENTS				*tabpagebuffer-misc-requirements*
 
 
 ==============================================================================
-INTERFACE					*tabpagebuffer-misc-interface*
+INTERFACE				*tabpagebuffer-misc-interface*
 ------------------------------------------------------------------------------
-VARIABLES					*tabpagebuffer-misc-variables*
+VARIABLES				*tabpagebuffer-misc-variables*
 
 				*g:tabpagebuffer#misc#delete_keeptabpage*
 g:tabpagebuffer#command#bdelete_keeptabpage
@@ -68,7 +70,7 @@ g:tabpagebuffer#command#bdelete_keeptabpage
 
 
 ------------------------------------------------------------------------------
-COMMANDS					*tabpagebuffer-misc-commands*
+COMMANDS				*tabpagebuffer-misc-commands*
 
 :TpbFiles[!]				*:TpbFiles* *:TpbBuffers* *:TpbLs*
 :TpbBuffers[!]
@@ -352,7 +354,7 @@ COMMANDS					*tabpagebuffer-misc-commands*
 
 
 ------------------------------------------------------------------------------
-FUNCTIONS					*tabpagebuffer-misc-functions*
+FUNCTIONS				*tabpagebuffer-misc-functions*
 
 				*tabpagebuffer#function#buflist()* *TbpList()*
 tabpagebuffer#function#buflist([{tabnr}])
@@ -522,7 +524,7 @@ tabpagebuffer#command#ball({command} [, {count}])
 
 
 ==============================================================================
-ERROR CODE					*tabpagebuffer-misc-errorcode*
+ERROR CODE				*tabpagebuffer-misc-errorcode*
 
 |E84|:	No modified buffer found
 |E86|:	Buffer `ld` does not exist
@@ -544,7 +546,7 @@ ETPB101:	tabpagebuffer or ctrlspace plugin is not installed
 
 
 ==============================================================================
-CHANGELOG					*tabpagebuffer-misc-changelog*
+CHANGELOG				*tabpagebuffer-misc-changelog*
 
 1.2.0	Add |:CtrlPTabpageBuffer|.
 1.1.0	Re-create.
