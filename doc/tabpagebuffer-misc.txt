@@ -52,7 +52,7 @@ REQUIREMENTS				*tabpagebuffer-misc-requirements*
 |tabpagebuffer|	(https://github.com/Shougo/tabpagebuffer.vim)
 |ctrlspace|	(http://www.vim.org/scripts/script.php?script_id=4789)
 
-|CtrlP|		(http://kien.github.com/ctrlp.vim)
+|CtrlP|		(http://ctrlpvim.github.com/ctrlp.vim)
 
 
 ==============================================================================
