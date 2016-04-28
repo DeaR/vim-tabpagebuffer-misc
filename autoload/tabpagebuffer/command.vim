@@ -57,7 +57,7 @@ else
   function! s:_sort_n(i1, i2)
     return a:i1 - a:i2
   endfunction
-  let s:sort_n : 's:_sort_n'
+  let s:sort_n = 's:_sort_n'
 endif
 
 if s:has_patch('7.3.438')
