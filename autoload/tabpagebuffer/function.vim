@@ -1,7 +1,7 @@
 " Functions for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-Sep-2015.
+" Last Change:  29-Apr-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -33,55 +33,57 @@ function! s:SID()
 endfunction
 
 " fileio.c
-function! s:file_pat_to_reg_pat(expr)
-  let pat = split(a:expr, '\zs')
-  let reg_pat = []
-  let nested = 0
-  let add_dollar = 0
-  if pat[0] != '*'
-    let pat = pat[1:]
-  else
-    call add(reg_pat, '^')
-  endif
-  if pat[-1] == '*'
-    let pat = pat[:-2]
-  else
-    let add_dollar = 1
-  endif
-  for p in pat
-    if p == '*'
-      call add(reg_pat, '.*')
-    elseif p == '.' || p == '~'
-      call add(reg_pat, '\' . p)
-    elseif p == '?'
-      call add(reg_pat, '.')
-    elseif p == '\' || p == '/'
-      call add(reg_pat, '[\/]')
-    elseif p == '{'
-      call add(reg_pat, '\(')
-      let nested += 1
-    elseif p == '}'
-      call add(reg_pat, '\}')
-      let nested -= 1
-    elseif p == ',' && nested
-      call add(reg_pat, '\|')
+if exists('*glob2regpat')
+  let s:glob2regpat = function('glob2regpat')
+else
+  function! s:glob2regpat(expr)
+    let pat = split(a:expr, '\zs')
+    let reg_pat = []
+    let nested = 0
+    let add_dollar = 0
+    if pat[0] != '*'
+      let pat = pat[1:]
     else
-      call add(reg_pat, p)
+      call add(reg_pat, '^')
     endif
-  endfor
-  if nested < 0
-    throw join(['tabpagebuffer-misc:E219:',
-    \ 'Missing {.'])
-  elseif nested > 0
-    throw join(['tabpagebuffer-misc:E220:',
-    \ 'Missing }.'])
-  elseif add_dollar
-    call add(reg_pat, '$')
-  endif
-  return join(reg_pat, '')
-endfunction
-let s:glob2regpat = function(exists('*glob2regpat') ?
-\ 'glob2regpat' : join(["\<SNR>", s:SID(), '_file_pat_to_reg_pat'], ''))
+    if pat[-1] == '*'
+      let pat = pat[:-2]
+    else
+      let add_dollar = 1
+    endif
+    for p in pat
+      if p == '*'
+        call add(reg_pat, '.*')
+      elseif p == '.' || p == '~'
+        call add(reg_pat, '\' . p)
+      elseif p == '?'
+        call add(reg_pat, '.')
+      elseif p == '\' || p == '/'
+        call add(reg_pat, '[\/]')
+      elseif p == '{'
+        call add(reg_pat, '\(')
+        let nested += 1
+      elseif p == '}'
+        call add(reg_pat, '\)')
+        let nested -= 1
+      elseif p == ',' && nested
+        call add(reg_pat, '\|')
+      else
+        call add(reg_pat, p)
+      endif
+    endfor
+    if nested < 0
+      throw join(['tabpagebuffer-misc:E219:',
+      \ 'Missing {.'])
+    elseif nested > 0
+      throw join(['tabpagebuffer-misc:E220:',
+      \ 'Missing }.'])
+    elseif add_dollar
+      call add(reg_pat, '$')
+    endif
+    return join(reg_pat, '')
+  endfunction
+endif
 
 " tabpagebuffer#function#buflist([{tabnr}])
 function! tabpagebuffer#function#buflist(...)

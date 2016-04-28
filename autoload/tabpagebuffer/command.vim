@@ -1,7 +1,7 @@
 " Commands for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  29-Sep-2015.
+" Last Change:  29-Apr-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -37,22 +37,38 @@ function! s:echoerr(...)
   echohl None
 endfunction
 
-function! s:has_patch(major, minor, patch)
-  let l:version = (a:major * 100 + a:minor)
-  return has('patch-' . a:major . '.' . a:minor . '.' . a:patch) ||
-  \ (v:version > l:version) ||
-  \ (v:version == l:version && has('patch' . a:patch))
-endfunction
+if has('patch-7.4.237')
+  function! s:has_patch(args) abort
+    return has('patch-' . a:args)
+  endfunction
+else
+  function! s:has_patch(args) abort
+    let a = split(a:args, '\.')
+    let v = v:args >= p[0] * 100 + p[1]
+    return
+    \ v:version > v ||
+    \ v:version == v && has('patch' . p[2])
+  endfunction
+endif
 
-function! s:_numerical_sort(i1, i2)
-  return a:i1 - a:i2
-endfunction
-let s:numerical_sort = s:has_patch(7, 4, 341) ? 'n' : 's:_numerical_sort'
+if s:has_patch('7.4.341')
+  let s:sort_n = 'n'
+else
+  function! s:_sort_n(i1, i2)
+    return a:i1 - a:i2
+  endfunction
+  let s:sort_n : 's:_sort_n'
+endif
 
-let s:_doautocmd = s:has_patch(7, 3, 438) ? '<nomodeline>' : ''
-function! s:doautocmd(...)
-  execute 'doautocmd' s:_doautocmd join(a:000)
-endfunction
+if s:has_patch('7.3.438')
+  function! s:doautocmd(...)
+    execute 'doautocmd <nomodeline>' join(a:000)
+  endfunction
+else
+  function! s:doautocmd(...)
+    execute 'doautocmd' join(a:000)
+  endfunction
+endif
 
 function! s:bufnr(expr, ...)
   let create = get(a:000, 0)
@@ -118,7 +134,7 @@ function! tabpagebuffer#command#bdelete(command, ...)
   let cancel = ''
   if g:tabpagebuffer#command#bdelete_keeptabpage && tabpagenr('$') > 1
     let pop = get(filter(
-    \ add(sort(tabpagebuffer#function#buflist(), s:numerical_sort),
+    \ add(sort(tabpagebuffer#function#buflist(), s:sort_n),
     \   tabpagebuffer#function#bufnr('#')),
     \ 'buflisted(v:val) && index(bufs, v:val) < 0 && ' .
     \ 'getbufvar(v:val, "&buftype") != "quickfix"'), -1)
@@ -174,7 +190,7 @@ function! tabpagebuffer#command#bdelete_all(command, ...)
   let l:count = get(a:000, 0, -1)
 
   call tabpagebuffer#command#bdelete(a:command,
-  \ sort(tabpagebuffer#function#buflist(), s:numerical_sort)[:(l:count)])
+  \ sort(tabpagebuffer#function#buflist(), s:sort_n)[:(l:count)])
 endfunction
 function! tabpagebuffer#command#do_bdelete_all(command, count)
   try
@@ -226,7 +242,7 @@ function! s:bnext(forward, modified, command, count)
   let bufs = sort(
   \ filter(tabpagebuffer#function#buflist(),
   \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
-  \ s:numerical_sort)
+  \ s:sort_n)
   " echo 'bufs:' bufs
   if empty(bufs)
     if a:modified
@@ -278,7 +294,7 @@ function! s:brewind(forward, modified, command)
   let bufs = sort(
   \ filter(tabpagebuffer#function#buflist(),
   \   'buflisted(v:val) && (!a:modified || getbufvar(v:val, "&modified"))'),
-  \ s:numerical_sort)
+  \ s:sort_n)
   " echo 'bufs:' bufs
   if empty(bufs)
     if a:modified
@@ -319,7 +335,7 @@ function! s:unhide(loaded, command, count)
   let bufs = reverse(sort(
   \ filter(tabpagebuffer#function#buflist(),
   \   'buflisted(v:val) && (!a:loaded || bufloaded(v:val))'),
-  \ s:numerical_sort))
+  \ s:sort_n))
   " echo 'bufs:' bufs
   if empty(bufs)
     return
