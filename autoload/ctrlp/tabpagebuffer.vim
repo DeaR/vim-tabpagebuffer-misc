@@ -1,7 +1,7 @@
 " CtrlP function for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  08-Oct-2015.
+" Last Change:  09-May-2016.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -44,28 +44,59 @@ function! s:compmreb(...)
   return ctrlp#call('s:compmreb', a:1, a:2)
 endfunction
 
+function! s:syntax()
+  if !ctrlp#nosy() && ctrlp#getvar('s:has_conceal')
+    for [ke, va] in items(ctrlp#getvar('s:hlgrps'))
+      call ctrlp#hicheck('CtrlP' . ke, va)
+    endfor
+
+    syntax region CtrlPBufferNr     concealends matchgroup=Ignore start='<nr>' end='</nr>'
+    syntax region CtrlPBufferInd    concealends matchgroup=Ignore start='<bi>' end='</bi>'
+    syntax region CtrlPBufferRegion concealends matchgroup=Ignore start='<bn>' end='</bn>'
+    \ contains=CtrlPBufferHid,CtrlPBufferHidMod,CtrlPBufferVis,CtrlPBufferVisMod,CtrlPBufferCur,CtrlPBufferCurMod
+    syntax region CtrlPBufferHid    concealends matchgroup=Ignore     start='\s*{' end='}' contained
+    syntax region CtrlPBufferHidMod concealends matchgroup=Ignore    start='+\s*{' end='}' contained
+    syntax region CtrlPBufferVis    concealends matchgroup=Ignore   start='\*\s*{' end='}' contained
+    syntax region CtrlPBufferVisMod concealends matchgroup=Ignore  start='\*+\s*{' end='}' contained
+    syntax region CtrlPBufferCur    concealends matchgroup=Ignore  start='\*!\s*{' end='}' contained
+    syntax region CtrlPBufferCurMod concealends matchgroup=Ignore start='\*+!\s*{' end='}' contained
+    syntax region CtrlPBufferPath   concealends matchgroup=Ignore start='<bp>' end='</bp>'
+  endif
+endfunction
+
 function! ctrlp#tabpagebuffer#init(crbufnr)
   let tabnr = exists('s:tabnr') ? s:tabnr : tabpagenr()
   let bufs = [[], []]
   for bufnr in sort(filter(tabpagebuffer#function#buflist(tabnr),
   \ 'empty(getbufvar(v:val, "&buftype")) && buflisted(v:val)'), 's:compmreb')
-    let name = bufname(bufnr)
-    let noname = empty(name)
-    let fname = fnamemodify(
-    \ noname ? ('[' . bufnr . '*No Name]') : name, ':.')
-    let idc =   (bufnr == bufnr('#')   ? '#' : '') .
-    \ (getbufvar(bufnr, '&modifiable') ? '' : '-') .
-    \ (getbufvar(bufnr, '&readonly')   ? '=' : '') .
-    \ (getbufvar(bufnr, '&modified')   ? '+' : '')
-    let fname .= !empty(idc) ? ("\t" . idc) : ''
-    call add(bufs[noname], fname)
+    let parts = ctrlp#call('s:bufparts', bufnr)
+    if !ctrlp#nosy() && ctrlp#getvar('s:has_conceal')
+      let str = printf('<nr>%' . ctrlp#getvar('s:bufnr_width') . 's</nr>', bufnr)
+      let str .= printf(' %-13s %s%-36s',
+      \ '<bi>' . parts[0] . '</bi>',
+      \ '<bn>' . parts[1], '{' . parts[2] . '}</bn>')
+      if !empty(ctrlp#getvar('s:bufpath_mod'))
+        let str .= printf('  %s', '<bp>' . parts[3] . '</bp>')
+      endif
+    else
+      let str = printf('%' . ctrlp#getvar('s:bufnr_width') . 's', bufnr)
+      let str .= printf(' %-5s %-30s',
+      \ parts[0],
+      \ parts[2])
+      if !empty(ctrlp#getvar('s:bufpath_mod'))
+        let str .= printf('  %s', parts[3])
+      endif
+    endif
+    call add(bufs[empty(bufname(bufnr))], str)
   endfor
+
+  call s:syntax()
   return bufs[0] + bufs[1]
 endfunction
 
 function! ctrlp#tabpagebuffer#accept(mode, str)
-  let fname = get(split(a:str, "\t"), 0, a:str)
-  call ctrlp#acceptfile(a:mode, fname)
+  let bufnr = str2nr(matchstr(a:str, '^\%(<nr>\)\?\s*\zs\d\+'))
+  call ctrlp#acceptfile(a:mode, bufnr)
 endfunction
 
 function! ctrlp#tabpagebuffer#cmd(...)
