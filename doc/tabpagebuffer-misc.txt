@@ -1,6 +1,6 @@
 *tabpagebuffer-misc.txt*			*tabpagebuffer-misc*
 
-Version: 1.2.0
+Version: 1.3.0
 Author : DeaR <nayuri@kuonn.mydns.jp>
 License: MIT License  {{{
     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
@@ -548,6 +548,7 @@ ETPB101:	tabpagebuffer or ctrlspace plugin is not installed
 ==============================================================================
 CHANGELOG				*tabpagebuffer-misc-changelog*
 
+1.3.0	Fix |:CtrlPTabpageBuffer| style.
 1.2.0	Add |:CtrlPTabpageBuffer|.
 1.1.0	Re-create.
 1.0.0	First version.
