@@ -1,7 +1,7 @@
 " CtrlP function for the buffer belonging to the tab page.
 "
 " Maintainer:   DeaR <nayuri@kuonn.mydns.jp>
-" Last Change:  09-May-2016.
+" Last Change:  20-Jun-2018.
 " License:      MIT License {{{
 "     Copyright (c) 2015 DeaR <nayuri@kuonn.mydns.jp>
 "
@@ -45,11 +45,8 @@ function! s:compmreb(...)
 endfunction
 
 function! s:syntax()
+  call ctrlp#syntax()
   if !ctrlp#nosy() && ctrlp#getvar('s:has_conceal')
-    for [ke, va] in items(ctrlp#getvar('s:hlgrps'))
-      call ctrlp#hicheck('CtrlP' . ke, va)
-    endfor
-
     syntax region CtrlPBufferNr     concealends matchgroup=Ignore start='<nr>' end='</nr>'
     syntax region CtrlPBufferInd    concealends matchgroup=Ignore start='<bi>' end='</bi>'
     syntax region CtrlPBufferRegion concealends matchgroup=Ignore start='<bn>' end='</bn>'
@@ -68,10 +65,12 @@ function! ctrlp#tabpagebuffer#init(crbufnr)
   let tabnr = exists('s:tabnr') ? s:tabnr : tabpagenr()
   let bufs = [[], []]
   for bufnr in sort(filter(tabpagebuffer#function#buflist(tabnr),
-  \ 'empty(getbufvar(v:val, "&buftype")) && buflisted(v:val)'), 's:compmreb')
+  \ '(empty(getbufvar(v:val, "&buftype")) || ctrlp#call("s:isterminal")) &&' .
+  \ 'buflisted(v:val) && v:val != a:crbufnr'), 's:compmreb')
     let parts = ctrlp#call('s:bufparts', bufnr)
+    let str = ''
     if !ctrlp#nosy() && ctrlp#getvar('s:has_conceal')
-      let str = printf('<nr>%' . ctrlp#getvar('s:bufnr_width') . 's</nr>', bufnr)
+      let str .= printf('<nr>%' . ctrlp#getvar('s:bufnr_width') . 's</nr>', bufnr)
       let str .= printf(' %-13s %s%-36s',
       \ '<bi>' . parts[0] . '</bi>',
       \ '<bn>' . parts[1], '{' . parts[2] . '}</bn>')
@@ -79,7 +78,7 @@ function! ctrlp#tabpagebuffer#init(crbufnr)
         let str .= printf('  %s', '<bp>' . parts[3] . '</bp>')
       endif
     else
-      let str = printf('%' . ctrlp#getvar('s:bufnr_width') . 's', bufnr)
+      let str .= printf('%' . ctrlp#getvar('s:bufnr_width') . 's', bufnr)
       let str .= printf(' %-5s %-30s',
       \ parts[0],
       \ parts[2])
